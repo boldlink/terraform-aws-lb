@@ -4,7 +4,7 @@
 
 This terraform module creates an Application Load Balancer
 
-Example available [here](./example/main.tf)
+Example available [here](https://github.com/boldlink/terraform-aws-alb/tree/main/examples/main.tf)
 
 ## Documentation
 
@@ -12,19 +12,18 @@ Example available [here](./example/main.tf)
 
 [Terraform provider documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb)
 
-
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.72.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.0 |
 
 ## Modules
 
