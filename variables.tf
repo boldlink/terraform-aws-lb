@@ -96,7 +96,7 @@ Tags
 */
 
 variable "environment" {
-  description = "The environemnt this resource is being deployed to"
+  description = "The environment this resource is being deployed to"
   type        = string
   default     = null
 }
