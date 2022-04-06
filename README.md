@@ -2,7 +2,7 @@
 
 ## Description
 
-This terraform module creates an Application Load Balancer
+This terraform module creates an Application Load Balancer and Target Group
 
 Example available [here](https://github.com/boldlink/terraform-aws-alb/tree/main/examples/main.tf)
 
@@ -23,7 +23,7 @@ Example available [here](https://github.com/boldlink/terraform-aws-alb/tree/main
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.75.1 |
 
 ## Modules
 
@@ -34,6 +34,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_lb.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
+| [aws_lb_target_group.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 
 ## Inputs
 
@@ -49,6 +50,7 @@ No modules.
 | <a name="input_idle_timeout"></a> [idle\_timeout](#input\_idle\_timeout) | The time in seconds that the connection is allowed to be idle. Only valid for Load Balancers of type `application`. Default: 60 | `string` | `60` | no |
 | <a name="input_internal"></a> [internal](#input\_internal) | Boolean, set the type of ip for the LB | `bool` | `false` | no |
 | <a name="input_ip_address_type"></a> [ip\_address\_type](#input\_ip\_address\_type) | The type of IP addresses used by the subnets for your load balancer. The possible values are `ipv4` and `dualstack` | `string` | `null` | no |
+| <a name="input_lambda_multi_value_headers_enabled"></a> [lambda\_multi\_value\_headers\_enabled](#input\_lambda\_multi\_value\_headers\_enabled) | (Optional) Whether the request and response headers exchanged between the load balancer and the Lambda function include arrays of values or strings. Only applies when target\_type is lambda. Default is false | `bool` | `false` | no |
 | <a name="input_load_balancer_type"></a> [load\_balancer\_type](#input\_load\_balancer\_type) | Set the App lb type, can be application or network | `string` | `"application"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Input the name of stack | `string` | `null` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Creates a unique name beginning with the specified prefix. Conflicts with `name` | `string` | `null` | no |
@@ -56,7 +58,23 @@ No modules.
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | The security group(s) of the LB | `list(string)` | `[]` | no |
 | <a name="input_subnet_mapping"></a> [subnet\_mapping](#input\_subnet\_mapping) | Define subnet mapping block | `map(string)` | `{}` | no |
 | <a name="input_subnets"></a> [subnets](#input\_subnets) | The subnets to listen from | `list(string)` | `[]` | no |
+| <a name="input_target_group_connection_termination"></a> [target\_group\_connection\_termination](#input\_target\_group\_connection\_termination) | (Optional) Whether to terminate connections at the end of the deregistration timeout on Network Load Balancers. See doc for more information. Default is false | `bool` | `false` | no |
+| <a name="input_target_group_deregistration_delay"></a> [target\_group\_deregistration\_delay](#input\_target\_group\_deregistration\_delay) | (Optional) Amount time for Elastic Load Balancing to wait before changing the state of a deregistering target from draining to unused. The range is 0-3600 seconds. The default value is 300 seconds. | `number` | `300` | no |
+| <a name="input_target_group_health_check"></a> [target\_group\_health\_check](#input\_target\_group\_health\_check) | Health Check configuration block for the target group | `map(string)` | `{}` | no |
+| <a name="input_target_group_load_balancing_algorithm_type"></a> [target\_group\_load\_balancing\_algorithm\_type](#input\_target\_group\_load\_balancing\_algorithm\_type) | (Optional) Determines how the load balancer selects targets when routing requests. Only applicable for Application Load Balancer Target Groups. The value is round\_robin or least\_outstanding\_requests. The default is round\_robin. | `string` | `"round_robin"` | no |
+| <a name="input_target_group_name"></a> [target\_group\_name](#input\_target\_group\_name) | (Optional, Forces new resource) Name of the target group. If omitted, Terraform will assign a random, unique name. | `string` | `null` | no |
+| <a name="input_target_group_name_prefix"></a> [target\_group\_name\_prefix](#input\_target\_group\_name\_prefix) | (Optional, Forces new resource) Creates a unique name beginning with the specified prefix. Conflicts with name | `string` | `null` | no |
+| <a name="input_target_group_port"></a> [target\_group\_port](#input\_target\_group\_port) | (May be required, Forces new resource) Port on which targets receive traffic, unless overridden when registering a specific target. Required when target\_type is instance, ip or alb. Does not apply when target\_type is lambda. | `string` | `null` | no |
+| <a name="input_target_group_preserve_client_ip"></a> [target\_group\_preserve\_client\_ip](#input\_target\_group\_preserve\_client\_ip) | Whether client IP preservation is enabled | `bool` | `false` | no |
+| <a name="input_target_group_protocol"></a> [target\_group\_protocol](#input\_target\_group\_protocol) | Protocol to use for routing traffic to the targets. Should be one of GENEVE, HTTP, HTTPS, TCP, TCP\_UDP, TLS, or UDP. Required when target\_type is instance, ip or alb. Does not apply when target\_type is lambda | `string` | `null` | no |
+| <a name="input_target_group_protocol_version"></a> [target\_group\_protocol\_version](#input\_target\_group\_protocol\_version) | Only applicable when protocol is HTTP or HTTPS. The protocol version. Specify GRPC to send requests to targets using gRPC. Specify HTTP2 to send requests to targets using HTTP/2. The default is HTTP1, which sends requests to targets using HTTP/1.1 | `string` | `"HTTP1"` | no |
+| <a name="input_target_group_proxy_protocol_v2"></a> [target\_group\_proxy\_protocol\_v2](#input\_target\_group\_proxy\_protocol\_v2) | Whether to enable support for proxy protocol v2 on Network Load Balancers. | `bool` | `false` | no |
+| <a name="input_target_group_slow_start"></a> [target\_group\_slow\_start](#input\_target\_group\_slow\_start) | Amount time for targets to warm up before the load balancer sends them a full share of requests. The range is 30-900 seconds or 0 to disable. The default value is 0 seconds. | `number` | `0` | no |
+| <a name="input_target_group_stickiness"></a> [target\_group\_stickiness](#input\_target\_group\_stickiness) | Stickiness configuration block. | `map(string)` | `{}` | no |
+| <a name="input_target_group_tags"></a> [target\_group\_tags](#input\_target\_group\_tags) | Map of tags to assign to the resource. | `map(string)` | `{}` | no |
+| <a name="input_target_type"></a> [target\_type](#input\_target\_type) | Type of target that you must specify when registering targets with this target group. | `string` | `"instance"` | no |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Define maximum timeout for creating, updating, and deleting load balancer resources | `map(string)` | `{}` | no |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | Identifier of the VPC in which to create the target group. Required when target\_type is instance, ip or alb. Does not apply when target\_type is lambda. | `string` | `null` | no |
 
 ## Outputs
 

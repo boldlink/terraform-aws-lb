@@ -43,11 +43,36 @@ module "alb" {
   internal           = true
   subnets            = data.aws_subnets.default.ids
   security_groups    = [data.aws_security_group.default.id]
+
+  target_group_health_check = {
+    enabled             = true
+    healthy_threshold   = 10
+    interval            = 10
+    path                = "/"
+    port                = 80
+    protocol            = "HTTP"
+    timeout             = 5
+    unhealthy_threshold = 7
+  }
+
+  target_group_name_prefix = "h1"
+  target_group_port        = 80
+  target_group_protocol    = "HTTP"
+  target_group_stickiness = {
+    cookie_duration = 300
+    cookie_name     = "test-session-cookie"
+    type            = "lb_cookie"
+  }
+  target_group_tags = {
+    Name        = "test-target-group"
+    Environment = "dev"
+  }
+  target_type = "ip"
+  vpc_id      = data.aws_vpc.default.id
+
 }
 output "outputs" {
   value = [
     module.alb,
   ]
 }
-
-
