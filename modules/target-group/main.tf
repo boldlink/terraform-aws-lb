@@ -55,7 +55,7 @@ resource "aws_lb_listener" "main" {
   port              = lookup(var.listeners[count.index], "port", null)
   protocol          = lookup(var.listeners[count.index], "protocol", null)
   alpn_policy       = lookup(var.listeners[count.index], "alpn_policy", null)
-  certificate_arn   = lookup(var.listeners[count.index], "certificate_arn", null)
+  certificate_arn   = lookup(var.listeners[count.index], "protocol", null) == "HTTPS" || lookup(var.listeners[count.index], "protocol", null) == "TLS" && var.create_ssl_certificate ? join("", aws_acm_certificate.main.*.arn) : lookup(var.listeners[count.index], "certificate_arn", null)
   ssl_policy        = lookup(var.listeners[count.index], "ssl_policy", null)
   tags              = lookup(var.listeners[count.index], "tags", {})
   dynamic "default_action" {
@@ -125,4 +125,36 @@ resource "aws_lb_listener" "main" {
       }
     }
   }
+}
+
+########################################
+#### Self Signed Certificate
+########################################
+resource "tls_private_key" "main" {
+  count     = var.create_ssl_certificate ? 1 : 0
+  algorithm = "RSA"
+}
+
+resource "tls_self_signed_cert" "main" {
+  count           = var.create_ssl_certificate ? 1 : 0
+  private_key_pem = tls_private_key.main[0].private_key_pem
+
+  subject {
+    common_name  = var.cert_common_name
+    organization = var.cert_organization
+  }
+
+  validity_period_hours = var.cert_validity_period_hours
+
+  allowed_uses = [
+    "key_encipherment",
+    "digital_signature",
+    "server_auth",
+  ]
+}
+
+resource "aws_acm_certificate" "main" {
+  count            = var.create_ssl_certificate ? 1 : 0
+  private_key      = tls_private_key.main[0].private_key_pem
+  certificate_body = tls_self_signed_cert.main[0].cert_pem
 }

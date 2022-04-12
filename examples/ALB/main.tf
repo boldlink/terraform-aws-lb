@@ -53,12 +53,26 @@ module "target_group1" {
     timeout             = 5
     unhealthy_threshold = 7
   }
-
+  create_ssl_certificate = true
   listeners = [
     {
       load_balancer_arn = module.alb.lb_arn
       port              = "80"
       protocol          = "HTTP"
+      default_action = {
+        type = "fixed-response"
+
+        fixed_response = {
+          content_type = "text/plain"
+          message_body = "Fixed message"
+          status_code  = "200"
+        }
+      }
+    },
+    {
+      load_balancer_arn = module.alb.lb_arn
+      port              = "443"
+      protocol          = "HTTPS"
       default_action = {
         type = "fixed-response"
 

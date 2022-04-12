@@ -110,3 +110,28 @@ variable "listeners" {
   type        = any
   default     = []
 }
+
+
+variable "cert_common_name" {
+  description = "Enter the ssl certificate common name, e.g \"example.com\""
+  type        = string
+  default     = "boldlink.io"
+}
+
+variable "cert_organization" {
+  description = "The Organization which the certificate belongs to, e.g \"Boldlink-SIG\""
+  type        = string
+  default     = "Boldlink-SIG"
+}
+
+variable "cert_validity_period_hours" {
+  description = "The number of hours the certificate is valid"
+  type        = number
+  default     = 12
+}
+
+variable "create_ssl_certificate" {
+  description = "Choose whether to create ssl certificate"
+  type        = bool
+  default     = false
+}
