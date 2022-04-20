@@ -35,7 +35,6 @@ resource "random_string" "random" {
 module "alb" {
   source             = "../../"
   name               = "${random_string.random.id}-alb"
-  load_balancer_type = "application"
   internal           = true
   subnets            = data.aws_subnets.default.ids
   security_groups    = [data.aws_security_group.default.id]
@@ -57,7 +56,7 @@ module "target_group1" {
   listeners = [
     {
       load_balancer_arn = module.alb.lb_arn
-      port              = "80"
+      port              = 80
       protocol          = "HTTP"
       default_action = {
         type = "fixed-response"
@@ -71,7 +70,7 @@ module "target_group1" {
     },
     {
       load_balancer_arn = module.alb.lb_arn
-      port              = "443"
+      port              = 443
       protocol          = "HTTPS"
       default_action = {
         type = "fixed-response"
