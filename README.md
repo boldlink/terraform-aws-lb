@@ -1,10 +1,10 @@
-# AWS Application Load Balancer Terraform module
+# AWS Load Balancer Terraform module
 
 ## Description
 
-This terraform module creates an Application Load Balancer
+This terraform module creates Application, Network and Gateway Load Balancers, Target Groups and Load Balancer Listeners
 
-Example available [here](https://github.com/boldlink/terraform-aws-alb/tree/main/examples/main.tf)
+Example available [here](https://github.com/boldlink/terraform-aws-lb/tree/main/examples/main.tf)
 
 ## Documentation
 
@@ -23,7 +23,7 @@ Example available [here](https://github.com/boldlink/terraform-aws-alb/tree/main
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.75.1 |
 
 ## Modules
 
@@ -62,11 +62,11 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_alb_arn"></a> [alb\_arn](#output\_alb\_arn) | The ARN of the load balancer (matches `id`). |
-| <a name="output_alb_arn_suffix"></a> [alb\_arn\_suffix](#output\_alb\_arn\_suffix) | The ARN suffix for use with CloudWatch Metrics. |
-| <a name="output_alb_dns_name"></a> [alb\_dns\_name](#output\_alb\_dns\_name) | The DNS name of the load balancer. |
-| <a name="output_alb_id"></a> [alb\_id](#output\_alb\_id) | The ARN of the load balancer (matches `arn`). |
-| <a name="output_alb_subnet_mapping_outpost_id"></a> [alb\_subnet\_mapping\_outpost\_id](#output\_alb\_subnet\_mapping\_outpost\_id) | ID of the Outpost containing the load balancer. |
-| <a name="output_alb_tags_all"></a> [alb\_tags\_all](#output\_alb\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider `default_tags`. |
-| <a name="output_alb_zone_id"></a> [alb\_zone\_id](#output\_alb\_zone\_id) | The canonical hosted zone ID of the load balancer (to be used in a Route 53 Alias record). |
+| <a name="output_lb_arn"></a> [lb\_arn](#output\_lb\_arn) | The ARN of the load balancer (matches `id`). |
+| <a name="output_lb_arn_suffix"></a> [lb\_arn\_suffix](#output\_lb\_arn\_suffix) | The ARN suffix for use with CloudWatch Metrics. |
+| <a name="output_lb_dns_name"></a> [lb\_dns\_name](#output\_lb\_dns\_name) | The DNS name of the load balancer. |
+| <a name="output_lb_id"></a> [lb\_id](#output\_lb\_id) | The ARN of the load balancer (matches `arn`). |
+| <a name="output_lb_subnet_mapping_outpost_id"></a> [lb\_subnet\_mapping\_outpost\_id](#output\_lb\_subnet\_mapping\_outpost\_id) | ID of the Outpost containing the load balancer. |
+| <a name="output_lb_tags_all"></a> [lb\_tags\_all](#output\_lb\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider `default_tags`. |
+| <a name="output_lb_zone_id"></a> [lb\_zone\_id](#output\_lb\_zone\_id) | The canonical hosted zone ID of the load balancer (to be used in a Route 53 Alias record). |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -1,3 +1,7 @@
+#####################################
+### Load Balancer
+#####################################
+
 resource "aws_lb" "main" {
   name                             = var.name
   name_prefix                      = var.name_prefix
@@ -47,4 +51,3 @@ resource "aws_lb" "main" {
     var.other_tags,
   )
 }
-
