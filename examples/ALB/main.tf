@@ -33,7 +33,7 @@ resource "random_string" "random" {
 }
 
 module "alb" {
-  source             = "../../"
+  source             = "boldlink/alb/aws"
   name               = "${random_string.random.id}-alb"
   internal           = true
   subnets            = data.aws_subnets.default.ids
@@ -41,7 +41,7 @@ module "alb" {
 }
 
 module "target_group1" {
-  source = "../../modules/target-group"
+  source = "boldlink/alb/aws//modules/target-group"
   health_check = {
     enabled             = true
     healthy_threshold   = 10
@@ -101,7 +101,7 @@ module "target_group1" {
 }
 
 module "custom" {
-  source = "../../modules/target-group"
+  source = "boldlink/alb/aws//modules/target-group"
   health_check = {
     enabled             = true
     healthy_threshold   = 10
