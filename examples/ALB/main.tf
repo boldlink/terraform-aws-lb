@@ -128,6 +128,7 @@ module "custom" {
   target_type = "ip"
   vpc_id      = data.aws_vpc.default.id
 }
+
 output "outputs" {
   value = [
     module.alb,
