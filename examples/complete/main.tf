@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "eu-west-1"
-}
-
 data "aws_vpc" "default" {
   default = true
 }
@@ -22,26 +18,16 @@ data "aws_security_group" "default" {
   }
 }
 
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
-resource "random_string" "random" {
-  length  = 5
-  special = false
-  upper   = false
-}
-
-module "alb" {
-  source             = "boldlink/alb/aws"
-  name               = "${random_string.random.id}-alb"
-  internal           = true
-  subnets            = data.aws_subnets.default.ids
-  security_groups    = [data.aws_security_group.default.id]
+module "complete" {
+  source          = "../.."
+  name            = "complete-example-alb"
+  internal        = false
+  subnets         = data.aws_subnets.default.ids
+  security_groups = [data.aws_security_group.default.id]
 }
 
 module "target_group1" {
-  source = "boldlink/alb/aws//modules/target-group"
+  source = "../../modules/target-group"
   health_check = {
     enabled             = true
     healthy_threshold   = 10
@@ -55,7 +41,7 @@ module "target_group1" {
   create_ssl_certificate = true
   listeners = [
     {
-      load_balancer_arn = module.alb.lb_arn
+      load_balancer_arn = module.complete.lb_arn
       port              = 80
       protocol          = "HTTP"
       default_action = {
@@ -69,7 +55,7 @@ module "target_group1" {
       }
     },
     {
-      load_balancer_arn = module.alb.lb_arn
+      load_balancer_arn = module.complete.lb_arn
       port              = 443
       protocol          = "HTTPS"
       default_action = {
@@ -101,7 +87,7 @@ module "target_group1" {
 }
 
 module "custom" {
-  source = "boldlink/alb/aws//modules/target-group"
+  source = "../../modules/target-group"
   health_check = {
     enabled             = true
     healthy_threshold   = 10
@@ -127,9 +113,4 @@ module "custom" {
   }
   target_type = "ip"
   vpc_id      = data.aws_vpc.default.id
-}
-output "outputs" {
-  value = [
-    module.alb,
-  ]
 }

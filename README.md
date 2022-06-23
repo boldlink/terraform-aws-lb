@@ -1,3 +1,7 @@
+[![Build Status](https://github.com/boldlink/terraform-aws-lb/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/boldlink/terraform-aws-lb/actions)
+
+[<img src="https://avatars.githubusercontent.com/u/25388280?s=200&v=4" width="96"/>](https://boldlink.io)
+
 # AWS Load Balancer Terraform module
 
 ## Description
@@ -5,6 +9,39 @@
 This terraform module creates Application, Network and Gateway Load Balancers, Target Groups and Load Balancer Listeners
 
 Example available [here](https://github.com/boldlink/terraform-aws-lb/tree/main/examples/main.tf)
+
+## Usage
+*NOTE*: These examples use the latest version of this module
+
+```hcl
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
+
+data "aws_security_group" "default" {
+  vpc_id = data.aws_vpc.default.id
+
+  filter {
+    name   = "group-name"
+    values = ["default"]
+  }
+}
+
+module "minimum" {
+  source             = "../.."
+  name               = "minimum-example-lb"
+  internal           = false
+  subnets            = data.aws_subnets.default.ids
+  security_groups    = [data.aws_security_group.default.id]
+}
+```
 
 ## Documentation
 
@@ -17,13 +54,14 @@ Example available [here](https://github.com/boldlink/terraform-aws-lb/tree/main/
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.11 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.10.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.75.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.19.0 |
 
 ## Modules
 
@@ -70,3 +108,25 @@ No modules.
 | <a name="output_lb_tags_all"></a> [lb\_tags\_all](#output\_lb\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider `default_tags`. |
 | <a name="output_lb_zone_id"></a> [lb\_zone\_id](#output\_lb\_zone\_id) | The canonical hosted zone ID of the load balancer (to be used in a Route 53 Alias record). |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Third party software
+This repository uses third party software:
+* [pre-commit](https://pre-commit.com/) - Used to help ensure code and documentation consistency
+  * Install with `brew install pre-commit`
+  * Manually use with `pre-commit run`
+* [terraform 0.14.11](https://releases.hashicorp.com/terraform/0.14.11/) For backwards compatibility we are using version 0.14.11 for testing making this the min version tested and without issues with terraform-docs.
+* [terraform-docs](https://github.com/segmentio/terraform-docs) - Used to generate the [Inputs](#Inputs) and [Outputs](#Outputs) sections
+  * Install with `brew install terraform-docs`
+  * Manually use via pre-commit
+* [tflint](https://github.com/terraform-linters/tflint) - Used to lint the Terraform code
+  * Install with `brew install tflint`
+  * Manually use via pre-commit
+
+### Makefile
+The makefile contained in this repo is optimized for linux paths and the main purpose is to execute testing for now.
+* Create all tests:
+`$ make tests`
+* Clean all tests:
+`$ make clean`
+
+#### BOLDLink-SIG 2022
