@@ -38,7 +38,9 @@ module "target_group1" {
     timeout             = 5
     unhealthy_threshold = 7
   }
+
   create_ssl_certificate = true
+
   listeners = [
     {
       load_balancer_arn = module.complete.lb_arn
@@ -78,12 +80,14 @@ module "target_group1" {
     cookie_name     = "test-session-cookie"
     type            = "lb_cookie"
   }
+
+  target_type = "ip"
+  vpc_id      = data.aws_vpc.default.id
+
   tags = {
     Name        = "test-target-group"
     Environment = "dev"
   }
-  target_type = "ip"
-  vpc_id      = data.aws_vpc.default.id
 }
 
 module "custom" {
@@ -108,11 +112,11 @@ module "custom" {
     type            = "lb_cookie"
   }
 
+  target_type = "ip"
+  vpc_id      = data.aws_vpc.default.id
+
   tags = {
     Name        = "custom-target-group"
     Environment = "dev"
   }
-
-  target_type = "ip"
-  vpc_id      = data.aws_vpc.default.id
 }
