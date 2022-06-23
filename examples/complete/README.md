@@ -25,14 +25,16 @@
 | <a name="module_complete"></a> [complete](#module\_complete) | ../.. | n/a |
 | <a name="module_custom"></a> [custom](#module\_custom) | ../../modules/target-group | n/a |
 | <a name="module_target_group1"></a> [target\_group1](#module\_target\_group1) | ../../modules/target-group | n/a |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | git::https://github.com/boldlink/terraform-aws-vpc.git | 2.0.3 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aws_security_group.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/security_group) | data source |
-| [aws_subnets.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets) | data source |
-| [aws_vpc.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
+| [aws_security_group.lb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
 

@@ -1,20 +1,58 @@
-data "aws_vpc" "default" {
-  default = true
+module "vpc" {
+  source               = "git::https://github.com/boldlink/terraform-aws-vpc.git?ref=2.0.3"
+  cidr_block           = local.cidr_block
+  name                 = local.name
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+  account              = data.aws_caller_identity.current.account_id
+  region               = data.aws_region.current.name
+
+  ## public Subnets
+  public_subnets          = local.public_subnets
+  availability_zones      = local.azs
+  map_public_ip_on_launch = true
+  tag_env                 = local.tag_env
 }
 
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
+resource "aws_security_group" "lb" {
+  name        = "${local.name}-security-group"
+  description = "Allow inbound traffic from ${local.name} network"
+  vpc_id      = module.vpc.id
+
+  ingress {
+    description = "allow tls"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [local.cidr_block]
   }
-}
 
-data "aws_security_group" "default" {
-  vpc_id = data.aws_vpc.default.id
+  ingress {
+    description = "allow http"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-  filter {
-    name   = "group-name"
-    values = ["default"]
+  ingress {
+    description = "allow custom http"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "${local.name}-security-group"
   }
 }
 
@@ -22,8 +60,8 @@ module "complete" {
   source          = "../.."
   name            = "complete-example-alb"
   internal        = false
-  subnets         = data.aws_subnets.default.ids
-  security_groups = [data.aws_security_group.default.id]
+  subnets         = flatten(module.vpc.public_subnet_id)
+  security_groups = [aws_security_group.lb.id]
 }
 
 module "target_group1" {
@@ -82,11 +120,11 @@ module "target_group1" {
   }
 
   target_type = "ip"
-  vpc_id      = data.aws_vpc.default.id
+  vpc_id      = module.vpc.id
 
   tags = {
-    Name        = "test-target-group"
-    Environment = "dev"
+    Name        = "${local.name}-target-group"
+    Environment = "Dev"
   }
 }
 
@@ -113,7 +151,7 @@ module "custom" {
   }
 
   target_type = "ip"
-  vpc_id      = data.aws_vpc.default.id
+  vpc_id      = module.vpc.id
 
   tags = {
     Name        = "custom-target-group"

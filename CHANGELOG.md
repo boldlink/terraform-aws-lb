@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix: CKV_AWS_103  #Ensure that load balancer is using TLS 1.2
 - Fix: CKV_AWS_233  #Ensure Create before destroy for ACM certificates
 - Fix: CKV2_AWS_28  #Ensure public facing ALB are protected by WAF
+- Feature: Add security group for the load balancer
 
 ## [1.0.5] - 2022-06-23
 ### Changes
