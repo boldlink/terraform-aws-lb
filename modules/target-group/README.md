@@ -1,16 +1,46 @@
-# target-group
+[![Build Status](https://github.com/boldlink/terraform-aws-lb/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/boldlink/terraform-aws-lb/actions)
+
+[<img src="https://avatars.githubusercontent.com/u/25388280?s=200&v=4" width="96"/>](https://boldlink.io)
+
+# AWS Target Group Terraform module
+
+## Description
+
+This terraform module creates a target group and listeners.
+
+Examples available [`here`](https://github.com/boldlink/terraform-aws-lb/tree/main/examples)
+
+## Usage
+*NOTE*: These examples use the latest version of this module
+
+```hcl
+module "miniumum" {
+  source  = "../modules/target-group"
+  name        = "minimum-lb-tg"
+  target_type = "lambda"
+}
+```
+## Documentation
+
+[Amazon Documentation](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html)
+
+[Terraform module documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.11 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.10.0 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | >= 3.2.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.9.0 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.19.0 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 3.4.0 |
 
 ## Modules
 
@@ -57,7 +87,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_arn"></a> [arn](#output\_arn) | n/a |
+| <a name="output_arn"></a> [arn](#output\_arn) | The Amazon Resource Name of the target group |
 | <a name="output_arn_suffix"></a> [arn\_suffix](#output\_arn\_suffix) | ARN suffix for use with CloudWatch Metrics. |
 | <a name="output_id"></a> [id](#output\_id) | ARN of the Target Group (matches `arn`) |
 | <a name="output_listener_arn"></a> [listener\_arn](#output\_listener\_arn) | ARN of the listener (matches `id`). |
@@ -66,3 +96,18 @@ No modules.
 | <a name="output_name"></a> [name](#output\_name) | Name of the Target Group. |
 | <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider default\_tags configuration block. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Third party software
+This repository uses third party software:
+* [pre-commit](https://pre-commit.com/) - Used to help ensure code and documentation consistency
+  * Install with `brew install pre-commit`
+  * Manually use with `pre-commit run`
+* [terraform 0.14.11](https://releases.hashicorp.com/terraform/0.14.11/) For backwards compatibility we are using version 0.14.11 for testing making this the min version tested and without issues with terraform-docs.
+* [terraform-docs](https://github.com/segmentio/terraform-docs) - Used to generate the [Inputs](#Inputs) and [Outputs](#Outputs) sections
+  * Install with `brew install terraform-docs`
+  * Manually use via pre-commit
+* [tflint](https://github.com/terraform-linters/tflint) - Used to lint the Terraform code
+  * Install with `brew install tflint`
+  * Manually use via pre-commit
+
+#### BOLDLink-SIG 2022

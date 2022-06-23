@@ -8,7 +8,7 @@ output "arn_suffix" {
 
 output "arn" {
   value       = aws_lb_target_group.main.*.arn
-  description = ""
+  description = "The Amazon Resource Name of the target group"
 }
 
 output "id" {
