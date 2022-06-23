@@ -107,10 +107,12 @@ module "custom" {
     cookie_name     = "test-session-cookie"
     type            = "lb_cookie"
   }
+
   tags = {
     Name        = "custom-target-group"
     Environment = "dev"
   }
+
   target_type = "ip"
   vpc_id      = data.aws_vpc.default.id
 }
