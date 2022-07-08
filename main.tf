@@ -203,6 +203,9 @@ resource "aws_acm_certificate" "main" {
   count            = var.create_ssl_certificate ? 1 : 0
   private_key      = tls_private_key.main[0].private_key_pem
   certificate_body = tls_self_signed_cert.main[0].cert_pem
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 

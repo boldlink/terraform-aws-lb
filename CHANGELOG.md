@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix: CKV_AWS_91  #Ensure the ELBv2 (Application/Network) has access logging enabled
 - Fix: CKV_AWS_2  #Ensure ALB protocol is HTTPS
 - Fix: CKV_AWS_103  #Ensure that load balancer is using TLS 1.2
-- Fix: CKV_AWS_233  #Ensure Create before destroy for ACM certificates
 - Fix: CKV2_AWS_28  #Ensure public facing ALB are protected by WAF
 - Add instance target type example
 - Add Lambda function target type example
@@ -23,7 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Feature: Consolidated sub-module and the main module
 - Feature: Add security group for the load balancer
 - Updated variable descriptions
--
+- Feature; create multiple target groups
+- CKV_AWS_233 checkov fix
 
 [1.0.6]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.6
 
