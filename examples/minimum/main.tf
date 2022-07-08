@@ -20,9 +20,6 @@ module "minimum" {
   name                       = local.name
   internal                   = false
   enable_deletion_protection = false
-  target_type                = "ip"
-  port                       = 80
-  protocol                   = "HTTP"
   vpc_id                     = module.vpc.id
   subnets                    = flatten(module.vpc.public_subnet_id)
   ingress_rules = {

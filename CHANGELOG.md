@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix: CKV2_AWS_28  #Ensure public facing ALB are protected by WAF
 - Add instance target type example
 - Add Lambda function target type example
+- Feature: Listener rules
+- Feature: Target group attachment
 
 ## [1.0.6] - 2022-07-05
 ### Description

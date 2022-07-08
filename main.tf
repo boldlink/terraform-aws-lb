@@ -51,58 +51,47 @@ resource "aws_lb" "main" {
   )
 }
 
-
-# Target Group
 resource "aws_lb_target_group" "main" {
-  connection_termination = var.connection_termination
-  deregistration_delay   = var.deregistration_delay
+  count                  = length(var.target_groups) > 0 ? length(var.target_groups) : 0
+  connection_termination = try(var.target_groups[count.index]["connection_termination"], null)
+  deregistration_delay   = try(var.target_groups[count.index]["deregistration_delay"], null)
 
-  ## Max 1 Block
   dynamic "health_check" {
-    for_each = length(keys(var.health_check)) == 0 ? [] : [var.health_check]
+    for_each = try([var.target_groups[count.index]["health_check"]], [])
     content {
-      enabled             = lookup(health_check.value, "enabled", true)
-      healthy_threshold   = lookup(health_check.value, "healthy_threshold", 3)
-      interval            = lookup(health_check.value, "interval", 30)
-      matcher             = lookup(health_check.value, "matcher", null)
-      path                = lookup(health_check.value, "path", null)
-      port                = lookup(health_check.value, "port", "traffic-port")
-      protocol            = var.target_type == "lambda" ? null : lookup(health_check.value, "protocol", "HTTP")
-      timeout             = lookup(health_check.value, "timeout", null)
-      unhealthy_threshold = lookup(health_check.value, "unhealthy_threshold", 3)
+      enabled             = try(health_check.value.enabled, true)
+      healthy_threshold   = try(health_check.value.healthy_threshold, 3)
+      interval            = try(health_check.value.interval, 30)
+      matcher             = try(health_check.value.matcher, null)
+      path                = try(health_check.value.path, null)
+      port                = try(health_check.value.port, "traffic-port")
+      protocol            = try(health_check.value.protocol, )
+      timeout             = try(health_check.value.timeout, null)
+      unhealthy_threshold = try(health_check.value.unhealthy_threshold, 3)
     }
   }
 
-  lambda_multi_value_headers_enabled = var.target_type == "lambda" ? var.lambda_multi_value_headers_enabled : null
-  load_balancing_algorithm_type      = var.load_balancing_algorithm_type
-  name_prefix                        = var.target_group_name == null ? var.target_group_name_prefix : null
-  name                               = var.target_group_name
-  port                               = var.target_type == "lambda" ? null : var.port
-  preserve_client_ip                 = var.protocol == "HTTP" ? null : var.preserve_client_ip
-  protocol_version                   = var.protocol == "HTTP" || var.protocol == "HTTPS" ? var.protocol_version : null
-  protocol                           = var.target_type == "lambda" ? null : var.protocol
-  proxy_protocol_v2                  = var.proxy_protocol_v2
-  slow_start                         = var.slow_start
-
+  lambda_multi_value_headers_enabled = try(var.target_groups[count.index]["lambda_multi_value_headers_enabled"], null)
+  load_balancing_algorithm_type      = try(var.target_groups[count.index]["load_balancing_algorithm_type"], null)
+  name_prefix                        = try(var.target_groups[count.index]["name_prefix"], null)
+  name                               = try(var.target_groups[count.index]["name"], null)
+  port                               = try(var.target_groups[count.index]["port"], null)
+  preserve_client_ip                 = try(var.target_groups[count.index]["preserve_client_ip"], null)
+  protocol_version                   = try(var.target_groups[count.index]["protocol_version"], null)
+  protocol                           = try(var.target_groups[count.index]["protocol"], null)
+  vpc_id                             = var.vpc_id
+  target_type                        = try(var.target_groups[count.index]["target_type"], null)
   ## Max 1 block
   dynamic "stickiness" {
-    for_each = length(keys(var.stickiness)) == 0 ? [] : [var.stickiness]
+    for_each = try([var.target_groups[count.index]["stickiness"]], [])
     content {
-      cookie_duration = lookup(stickiness.value, "cookie_duration", null)
-      cookie_name     = lookup(stickiness.value, "cookie_name", null)
-      enabled         = lookup(stickiness.value, "enabled", true)
+      cookie_duration = try(stickiness.value.cookie_duration, null)
+      cookie_name     = try(stickiness.value.cookie_name, null)
+      enabled         = try(stickiness.value.enabled, true)
       type            = stickiness.value.type
     }
   }
-
-  target_type = var.target_type
-  vpc_id      = var.target_type == "lambda" ? null : var.vpc_id
-  tags = merge(
-    {
-      "Name" = var.name
-    },
-    var.tags,
-  )
+  tags = try(var.target_groups[count.index]["tags"], null)
 }
 
 # Listener
@@ -120,7 +109,7 @@ resource "aws_lb_listener" "main" {
 
     content {
       type             = default_action.value.type
-      target_group_arn = contains([null, "", "forward"], lookup(default_action.value, "type", "")) ? aws_lb_target_group.main.id : null
+      target_group_arn = contains([null, "", "forward"], lookup(default_action.value, "type", "")) ? aws_lb_target_group.main[lookup(default_action.value, "tg_index", count.index)].id : null
 
       dynamic "authenticate_oidc" {
         for_each = length(lookup(default_action.value, "authenticate_oidc", {})) == 0 ? [] : [lookup(default_action.value, "authenticate_oidc", {})]

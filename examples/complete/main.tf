@@ -22,11 +22,56 @@ module "complete" {
   subnets                    = flatten(module.vpc.public_subnet_id)
   vpc_id                     = module.vpc.id
   enable_deletion_protection = false
-  target_type                = "ip"
   create_ssl_certificate     = true
-  target_group_name          = "complete-example-target-group"
-  port                       = 80
-  protocol                   = "HTTP"
+
+  target_groups = [
+    {
+      port        = 80
+      protocol    = "HTTP"
+      target_type = "ip"
+      stickiness = {
+        cookie_duration = 300
+        cookie_name     = "test-session-cookie"
+        type            = "lb_cookie"
+      }
+      health_check = {
+        enabled             = true
+        healthy_threshold   = 10
+        interval            = 10
+        path                = "/"
+        port                = 80
+        protocol            = "HTTP"
+        timeout             = 5
+        unhealthy_threshold = 7
+      }
+    }
+  ]
+
+  listeners = [
+    {
+      port     = 443
+      protocol = "HTTPS"
+      default_action = {
+        type = "fixed-response"
+
+        fixed_response = {
+          content_type = "text/plain"
+          message_body = "Fixed message"
+          status_code  = "200"
+        }
+      }
+    }
+    ,
+    {
+      default_action = {
+        type     = "forward"
+        tg_index = 0
+      }
+      port     = 80
+      protocol = "HTTP"
+    }
+
+  ]
   ingress_rules = {
     https = {
       description = "allow tls"
@@ -53,49 +98,4 @@ module "complete" {
       cidr_blocks = ["0.0.0.0/0"]
     }
   }
-  stickiness = {
-    cookie_duration = 300
-    cookie_name     = "test-session-cookie"
-    type            = "lb_cookie"
-  }
-
-  health_check = {
-    enabled             = true
-    healthy_threshold   = 10
-    interval            = 10
-    path                = "/"
-    port                = 80
-    protocol            = "HTTP"
-    timeout             = 5
-    unhealthy_threshold = 7
-  }
-
-  listeners = [
-    {
-      port     = 80
-      protocol = "HTTP"
-      default_action = {
-        type = "fixed-response"
-
-        fixed_response = {
-          content_type = "text/plain"
-          message_body = "Fixed message"
-          status_code  = "200"
-        }
-      }
-    },
-    {
-      port     = 443
-      protocol = "HTTPS"
-      default_action = {
-        type = "fixed-response"
-
-        fixed_response = {
-          content_type = "text/plain"
-          message_body = "Fixed message"
-          status_code  = "200"
-        }
-      }
-    }
-  ]
 }
