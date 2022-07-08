@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 - Showcase more feature usage in example
 - Add examples for other types of load balancers
-- Fix: CKV_AWS_150  #Ensure that Load Balancer has deletion protection enabled
 - Fix: CKV_AWS_131  #Ensure that ALB drops HTTP headers
 - Fix: CKV_AWS_91  #Ensure the ELBv2 (Application/Network) has access logging enabled
 - Fix: CKV_AWS_2  #Ensure ALB protocol is HTTPS
