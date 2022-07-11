@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Lambda function target type example
 - Feature: Listener rules
 - Feature: Target group attachment
+- Feature: use acm module for acm certificate in examples
 
 ## [1.0.6] - 2022-07-05
 ### Description
