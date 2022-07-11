@@ -5,20 +5,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- Module restructuring
 - Showcase more feature usage in example
 - Add examples for other types of load balancers
-- Fix: CKV_AWS_150  #Ensure that Load Balancer has deletion protection enabled
-- Fix: CKV_AWS_131  #Ensure that ALB drops HTTP headers
-- Fix: CKV_AWS_91  #Ensure the ELBv2 (Application/Network) has access logging enabled
-- Fix: CKV_AWS_150  #Ensure that Load Balancer has deletion protection enabled
 - Fix: CKV_AWS_131  #Ensure that ALB drops HTTP headers
 - Fix: CKV_AWS_91  #Ensure the ELBv2 (Application/Network) has access logging enabled
 - Fix: CKV_AWS_2  #Ensure ALB protocol is HTTPS
 - Fix: CKV_AWS_103  #Ensure that load balancer is using TLS 1.2
-- Fix: CKV_AWS_233  #Ensure Create before destroy for ACM certificates
 - Fix: CKV2_AWS_28  #Ensure public facing ALB are protected by WAF
+- Add instance target type example
+- Add Lambda function target type example
+- Feature: Listener rules
+- Feature: Target group attachment
+- Feature: use acm module for acm certificate in examples
+
+## [1.0.6] - 2022-07-05
+### Description
+- Feature: Consolidated sub-module and the main module
 - Feature: Add security group for the load balancer
+- Updated variable descriptions
+- Feature; create multiple target groups
+- CKV_AWS_233 checkov fix
+
+[1.0.6]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.6
 
 ## [1.0.5] - 2022-06-23
 ### Changes
@@ -63,6 +71,6 @@ Feature: Added listener certificate
 ### Changes
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.0.5...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.0.6...HEAD
 
 [1.0.0]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.0

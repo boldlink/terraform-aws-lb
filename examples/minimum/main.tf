@@ -14,36 +14,38 @@ module "vpc" {
   tag_env                 = local.tag_env
 }
 
-resource "aws_security_group" "lb" {
-  name        = "${local.name}-security-group"
-  description = "Allow inbound traffic from ${local.name} network"
-  vpc_id      = module.vpc.id
-
-  ingress {
-    description = "allow http"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  tags = {
-    Name = "${local.name}-security-group"
-  }
-}
-
 module "minimum" {
-  source          = "../.."
-  name            = local.name
-  internal        = false
-  subnets         = flatten(module.vpc.public_subnet_id)
-  security_groups = [aws_security_group.lb.id]
+  #checkov:skip=CKV_AWS_150: "Ensure that Load Balancer has deletion protection enabled"
+  source                     = "../../"
+  name                       = local.name
+  internal                   = false
+  enable_deletion_protection = false
+  vpc_id                     = module.vpc.id
+  subnets                    = flatten(module.vpc.public_subnet_id)
+  ingress_rules = {
+    https = {
+      description = "allow tls"
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    http = {
+      description = "allow http"
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+
+  egress_rules = {
+    default = {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
 }
