@@ -30,9 +30,10 @@ module "complete" {
       protocol    = "HTTP"
       target_type = "ip"
       stickiness = {
-        cookie_duration = 300
-        cookie_name     = "test-session-cookie"
+        cookie_duration = 3600
+        enabled         = true
         type            = "lb_cookie"
+
       }
       health_check = {
         enabled             = true
