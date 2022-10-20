@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Feature: Target group attachment
 - Feature: use acm module for acm certificate in examples
 
-## [1.0.7] - 2022-10-19
+## [1.0.7] - 2022-10-20
 ### Description
 - Fix: CKV_AWS_2  #Ensure ALB protocol is HTTPS
 - Fix: CKV_AWS_103  #Ensure that load balancer is using TLS 1.2
