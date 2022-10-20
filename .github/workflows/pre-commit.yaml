@@ -2,13 +2,18 @@ name: pre-commit
 
 on:
   push:
+
     branches:
-      - '!main'
-      - '!master'
-      - 'fixes/**'
-      - 'feature/**'
-      - 'hotfix/**'
-      - 'releases/**'
+      - 'fix/*'
+      - 'fixes/*'
+      - 'feature/*'
+      - 'features/*'
+      - 'hotfix/*'
+      - 'hotfixes/*'
+      - 'release/*'
+      - 'releases/*'
+      - 'chore/*'
+      - 'chores/*'
 
 env:
   TF_VER: "0.14.11"
@@ -22,12 +27,14 @@ jobs:
     steps:
     - name: Git checkout
       uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Install terraform binary
+    - name: Install terraform binary #and extract only terraform-docs binary as extracting other files will override some module files
       run: |
         mkdir -p /home/runner/.local/bin
         curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/${TF_DOCS_VER}/terraform-docs-${TF_DOCS_VER}-$(uname)-amd64.tar.gz
-        tar -xzf terraform-docs.tar.gz
+        tar -zxvf terraform-docs.tar.gz terraform-docs
         chmod +x terraform-docs
         mv terraform-docs ${BIN_PATH}/terraform-docs
 
@@ -51,5 +58,20 @@ jobs:
     - name: Install latest pre-commit
       run: pip install --upgrade pre-commit
 
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date '+%d-%m-%Y %H:%M:%S')"
+
     - name: Run pre-commit checks
-      run: pre-commit run -a
+      run: while ! pre-commit run -a ; do pre-commit run -a ; done || exit 0
+
+    - name: Push changes automatically!
+      uses: EndBug/add-and-commit@v9
+      with:
+        message: '[Boldlinksig]: Pre-commit auto updated files on ${{ steps.date.outputs.date }}.'
+        fetch: true
+        pull: '--rebase --autostash'
+        author_name: boldlinksig
+        author_email: boldlinksig@boldlink.io
+        committer_name: boldlinksig
+        committer_email: boldlinksig@boldlink.io
