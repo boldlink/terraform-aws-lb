@@ -1,0 +1,30 @@
+name: Checkov
+on:
+  push:
+    branches:
+      - '!main'
+      - 'fix/*'
+      - 'fixes/*'
+      - 'feature/*'
+      - 'features/*'
+      - 'hotfix/*'
+      - 'hotfixes/*'
+      - 'release/*'
+      - 'releases/*'
+      - 'chore/*'
+      - 'chores/*'
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+      - name: Test terraform with Checkov
+        id: checkov
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          file : tfplan.json
+          framework: terraform

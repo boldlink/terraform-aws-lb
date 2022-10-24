@@ -1,7 +1,15 @@
 locals {
-  name           = "complete-alb-example"
-  cidr_block     = "172.16.0.0/16"
-  tag_env        = "Dev"
-  public_subnets = cidrsubnets(local.cidr_block, 8, 8, 8)
-  azs            = flatten(data.aws_availability_zones.available.names)
+  name                      = "complete-alb-example"
+  public_subnets            = local.public_subnet_id
+  supporting_resources_name = "terraform-aws-lb"
+  vpc_id                    = data.aws_vpc.supporting.id
+
+  public_subnet_id = [
+    for i in data.aws_subnet.public : i.id
+  ]
+
+  tags = {
+    Environment        = "examples"
+    "user::CostCenter" = "terraform-registry"
+  }
 }
