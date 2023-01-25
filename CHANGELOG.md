@@ -7,14 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 - Showcase more feature usage in example
 - Add examples for other types of load balancers
-- Fix: CKV_AWS_131  #Ensure that ALB drops HTTP headers
-- Fix: CKV_AWS_91  #Ensure the ELBv2 (Application/Network) has access logging enabled
 - Fix: CKV2_AWS_28  #Ensure public facing ALB are protected by WAF
 - Add instance target type example
 - Add Lambda function target type example
 - Feature: Listener rules
 - Feature: Target group attachment
 - Feature: use acm module for acm certificate in examples
+
+## [1.08] - 2023-01-25
+### Description
+- Fix: CKV_AWS_131  #Ensure that ALB drops HTTP headers
+- Fix: CKV_AWS_91  #Ensure the ELBv2 (Application/Network) has access logging enabled
+- feat: add latest workflow files
 
 ## [1.0.7] - 2022-10-20
 ### Description
@@ -64,8 +68,9 @@ Feature: Added listener certificate
 ### Changes
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.0.7...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.0.8...HEAD
 
+[1.0.8]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.8
 [1.0.7]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.7
 [1.0.6]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.6
 [1.0.5]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.5

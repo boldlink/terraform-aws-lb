@@ -14,43 +14,15 @@ on:
       - 'releases/*'
       - 'chore/*'
       - 'chores/*'
+      - 'automatic*'
 
-env:
-  REPO_NAME: ${{ github.event.repository.name }}
-  REPO_OWNER: ${{ github.repository_owner }}
+permissions: read-all
 
 jobs:
   auto-badge:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Git checkout
-      uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Adding Workflow Badges
-      shell: bash
-      run: |
-        parent_dir=$(pwd)
-        directories=$(find . -not -path '*/.*' -type d -exec test -e '{}'/README.md \; -print)
-        files=$(ls .github/workflows | grep "yaml\|yml")
-        for folder in ${directories} ; do
-                echo "============================================"
-                echo "*******| changing dir to ${folder} |******"
-                cd ${parent_dir}
-                cd "${folder}"
-                sed -i '/Build Status/d' README.md
-                for x in ${files}; do
-                        echo "Adding ${x}" Badge!
-                        sed -i "1i \[!\[Build Status](https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/actions/workflows/"${x}"/badge.svg)](https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/actions)" README.md
-                done
-        done
-
-    - name: Push changes automatically!
-      uses: EndBug/add-and-commit@v9
-      with:
-        message: '[Boldlinksig]: Badges Added'
-        author_name: boldlinksig
-        author_email: boldlinksig@boldlink.io
-        committer_name: boldlinksig
-        committer_email: boldlinksig@boldlink.io
+    permissions:
+      contents: write
+    uses: boldlink/terraform-module-support/.github/workflows/auto-badge.yaml@main
+    secrets:
+      AUTOMATION_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}
+      SLACK_WEBHOOK : ${{secrets.SLACK_WEBHOOK}}

@@ -17,14 +17,20 @@ resource "aws_lb" "main" {
   ip_address_type                  = var.ip_address_type
   desync_mitigation_mode           = var.desync_mitigation_mode
 
+  /*
   dynamic "access_logs" {
-    for_each = length(keys(var.access_logs)) == 0 ? [] : [var.access_logs]
-
+    for_each = var.access_logs
     content {
       bucket  = access_logs.value.bucket
       enabled = lookup(access_logs.value, "enabled", null)
       prefix  = lookup(access_logs.value, "prefix", null)
     }
+  }
+*/
+  access_logs {
+    bucket  = var.access_logs["bucket"]
+    enabled = lookup(var.access_logs, "enabled", null)
+    prefix  = lookup(var.access_logs, "prefix", null)
   }
 
   dynamic "subnet_mapping" {
