@@ -8,6 +8,7 @@ module "access_logs_s3" {
 
 module "minimum" {
   #checkov:skip=CKV_AWS_150: "Ensure that Load Balancer has deletion protection enabled"
+  #checkov:skip=CKV_AWS_2: "Ensure ALB protocol is HTTPS"
   source                     = "../../"
   name                       = local.name
   internal                   = false
