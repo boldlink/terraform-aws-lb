@@ -1,3 +1,6 @@
+[![License](https://img.shields.io/badge/License-Apache-blue.svg)](https://github.com/boldlink/terraform-aws-lb/blob/main/LICENSE)
+[![Latest Release](https://img.shields.io/github/release/boldlink/terraform-aws-lb.svg)](https://github.com/boldlink/terraform-aws-lb/releases/latest)
+[![Build Status](https://github.com/boldlink/terraform-aws-lb/actions/workflows/update.yaml/badge.svg)](https://github.com/boldlink/terraform-aws-lb/actions)
 [![Build Status](https://github.com/boldlink/terraform-aws-lb/actions/workflows/release.yaml/badge.svg)](https://github.com/boldlink/terraform-aws-lb/actions)
 [![Build Status](https://github.com/boldlink/terraform-aws-lb/actions/workflows/pre-commit.yaml/badge.svg)](https://github.com/boldlink/terraform-aws-lb/actions)
 [![Build Status](https://github.com/boldlink/terraform-aws-lb/actions/workflows/pr-labeler.yaml/badge.svg)](https://github.com/boldlink/terraform-aws-lb/actions)
@@ -10,12 +13,22 @@
 
 ## Description
 
-This terraform module creates Application, Network and Gateway Load Balancers, Target Groups and Load Balancer Listeners
+This Terraform module is designed to facilitate the provisioning and configuration of Application, Network, and Gateway Load Balancers, Target Groups, and Load Balancer Listeners. It simplifies the process of creating and managing these resources, enabling efficient deployment and scaling.
 
-Example available [here](https://github.com/boldlink/terraform-aws-lb/tree/main/examples/main.tf)
+## Why choose this module
+- Ensures adherence to AWS security standards through the integration of checkov for code compliance scanning.
+- Offers advanced functionality including:
+  - Creation of single or multiple target groups for the load balancer
+  - Creation of listeners with advanced features
+  - Built-in security group with dynamic rule configuration capabilities
+  - Built-in self-signed certificate support and the ability to integrate external certificates
+- Provides ease of setup and utilization through clear instructions and examples.
+- Streamlines the process of setting up load balancers and associated resources, leading to time and complexity savings.
+
+Example available [here](./examples)
 
 ## Usage
-*NOTE*: These examples use the latest version of this module
+**NOTE**: These examples use the latest version of this module
 
 ```hcl
 data "aws_vpc" "default" {
@@ -39,7 +52,7 @@ data "aws_security_group" "default" {
 }
 
 module "minimum" {
-  source             = "../.."
+  source             = "boldlink/lb/aws"
   name               = "minimum-example-lb"
   internal           = false
   subnets            = data.aws_subnets.default.ids
@@ -66,8 +79,8 @@ module "minimum" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.35.0 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.3 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.51.0 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
 
 ## Modules
 
@@ -98,7 +111,7 @@ No modules.
 | <a name="input_create_ssl_certificate"></a> [create\_ssl\_certificate](#input\_create\_ssl\_certificate) | Choose whether to create ssl certificate | `bool` | `false` | no |
 | <a name="input_customer_owned_ipv4_pool"></a> [customer\_owned\_ipv4\_pool](#input\_customer\_owned\_ipv4\_pool) | (Optional) The ID of the customer owned ipv4 pool to use for this load balancer. | `string` | `null` | no |
 | <a name="input_desync_mitigation_mode"></a> [desync\_mitigation\_mode](#input\_desync\_mitigation\_mode) | (Optional) Determines how the load balancer handles requests that might pose a security risk to an application due to HTTP desync. Valid values are monitor, defensive (default), strictest. | `string` | `"defensive"` | no |
-| <a name="input_drop_invalid_header_fields"></a> [drop\_invalid\_header\_fields](#input\_drop\_invalid\_header\_fields) | (Optional)Indicates whether HTTP headers with header fields that are not valid are removed by the load balancer (true) or routed to targets (false). The default is false | `bool` | `false` | no |
+| <a name="input_drop_invalid_header_fields"></a> [drop\_invalid\_header\_fields](#input\_drop\_invalid\_header\_fields) | (Optional)Indicates whether HTTP headers with header fields that are not valid are removed by the load balancer (true) or routed to targets (false). The default is false | `bool` | `true` | no |
 | <a name="input_egress_rules"></a> [egress\_rules](#input\_egress\_rules) | (Optional) Egress rules to add to the security group | `any` | `{}` | no |
 | <a name="input_enable_cross_zone_load_balancing"></a> [enable\_cross\_zone\_load\_balancing](#input\_enable\_cross\_zone\_load\_balancing) | (Optional) If true, cross-zone load balancing of the load balancer will be enabled. This is a network load balancer feature. Defaults to `false` | `bool` | `false` | no |
 | <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | (Optional) If true, deletion of the load balancer will be disabled via the AWS API. This will prevent Terraform from deleting the load balancer. Defaults to false. | `bool` | `true` | no |
@@ -116,7 +129,7 @@ No modules.
 | <a name="input_subnets"></a> [subnets](#input\_subnets) | (Optional) A list of subnet IDs to attach to the LB. Subnets cannot be updated for Load Balancers of type network. Changing this value for load balancers of type network will force a recreation of the resource. | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Optional) A map of tags to assign to the resource. | `map(string)` | `{}` | no |
 | <a name="input_target_groups"></a> [target\_groups](#input\_target\_groups) | A list of maps describing the target groups for the LB | `any` | `[]` | no |
-| <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | (Optional) Define maximum timeout for creating, updating, and deleting load balancer resources | `map(string)` | `{}` | no |
+| <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | (Optional) Define maximum timeout for creating, updating, and deleting load balancer resources | `any` | `{}` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | Identifier of the VPC in which to create the target group. Required when target\_type is instance, ip or alb. Does not apply when target\_type is lambda. | `string` | `null` | no |
 
 ## Outputs
@@ -184,4 +197,4 @@ make cleanstatefiles
 ```
 
 
-#### BOLDLink-SIG 2022
+#### BOLDLink-SIG 2023

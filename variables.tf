@@ -49,7 +49,7 @@ variable "access_logs" {
 
 variable "timeouts" {
   description = "(Optional) Define maximum timeout for creating, updating, and deleting load balancer resources"
-  type        = map(string)
+  type        = any
   default     = {}
 }
 
@@ -62,7 +62,7 @@ variable "subnet_mapping" {
 variable "drop_invalid_header_fields" {
   description = "(Optional)Indicates whether HTTP headers with header fields that are not valid are removed by the load balancer (true) or routed to targets (false). The default is false"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "idle_timeout" {
