@@ -24,7 +24,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.56.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.59.0 |
 
 ## Modules
 
@@ -45,7 +45,18 @@
 
 ## Inputs
 
-No inputs.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_access_logs_enabled"></a> [access\_logs\_enabled](#input\_access\_logs\_enabled) | Whether access logs are enabled for the load balancer | `bool` | `true` | no |
+| <a name="input_egress_rules"></a> [egress\_rules](#input\_egress\_rules) | The egress configuration for outgoing lb traffic | `any` | <pre>{<br>  "cidr_blocks": [<br>    "0.0.0.0/0"<br>  ],<br>  "from_port": 0,<br>  "protocol": "-1",<br>  "to_port": 0<br>}</pre> | no |
+| <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | Whether to protect LB from deletion | `bool` | `false` | no |
+| <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | Whether to force deletion of the s3 bucket | `bool` | `true` | no |
+| <a name="input_http_ingress"></a> [http\_ingress](#input\_http\_ingress) | The ingress configuration for lb security group http rule | `any` | <pre>{<br>  "cidr_blocks": [<br>    "0.0.0.0/0"<br>  ],<br>  "description": "allow http",<br>  "from_port": 80,<br>  "protocol": "tcp",<br>  "to_port": 80<br>}</pre> | no |
+| <a name="input_https_ingress"></a> [https\_ingress](#input\_https\_ingress) | The ingress configuration for lb security group https rule | `any` | <pre>{<br>  "cidr_blocks": [<br>    "0.0.0.0/0"<br>  ],<br>  "description": "allow tls",<br>  "from_port": 443,<br>  "protocol": "tcp",<br>  "to_port": 443<br>}</pre> | no |
+| <a name="input_internal"></a> [internal](#input\_internal) | Whether the created LB is internal or not | `bool` | `false` | no |
+| <a name="input_name"></a> [name](#input\_name) | Name of the stack | `string` | `"minimum-alb-example"` | no |
+| <a name="input_supporting_resources_name"></a> [supporting\_resources\_name](#input\_supporting\_resources\_name) | Name of the supporting resources | `string` | `"terraform-aws-lb"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to the resources | `map(string)` | <pre>{<br>  "Department": "DevOps",<br>  "Environment": "examples",<br>  "LayerId": "cExample",<br>  "LayerName": "cExample",<br>  "Owner": "Boldlink",<br>  "Project": "Examples",<br>  "user::CostCenter": "terraform-registry"<br>}</pre> | no |
 
 ## Outputs
 
