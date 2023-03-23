@@ -16,8 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.9] - 2023-03-23
 ### Description
-- Fix: CKV2_AWS_28  #Ensure public facing ALB are protected by WAF
-- Fix: CKV_AWS_103 #Ensure that load balancer is using TLS 1.2
+- fix: CKV2_AWS_28  #Ensure public facing ALB are protected by WAF
+- fix: CKV_AWS_103 #Ensure that load balancer is using TLS 1.2
 - feat: added latest workflow files
 - feat: used variables to separate static values
 
