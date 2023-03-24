@@ -57,6 +57,13 @@ resource "aws_lb" "main" {
   )
 }
 
+## WAF Association
+resource "aws_wafv2_web_acl_association" "main" {
+  count        = var.associate_with_waf ? 1 : 0
+  resource_arn = aws_lb.main.arn
+  web_acl_arn  = var.web_acl_arn
+}
+
 resource "aws_lb_target_group" "main" {
   count                  = length(var.target_groups) > 0 ? length(var.target_groups) : 0
   connection_termination = try(var.target_groups[count.index]["connection_termination"], null)

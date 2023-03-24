@@ -9,8 +9,6 @@ module "access_logs_s3" {
 module "complete" {
   #checkov:skip=CKV_AWS_150: "Ensure that Load Balancer has deletion protection enabled"
   #checkov:skip=CKV_AWS_2: "Ensure ALB protocol is HTTPS"
-  #checkov:skip=CKV_AWS_103: "Ensure that load balancer is using at least TLS 1.2"
-  #checkov:skip=CKV2_AWS_28: "Ensure public facing ALB are protected by WAF"
   source                     = "../../"
   name                       = var.name
   internal                   = var.internal

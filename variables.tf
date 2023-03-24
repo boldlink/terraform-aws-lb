@@ -152,7 +152,6 @@ variable "create_ssl_certificate" {
 }
 
 # Security group
-
 variable "ingress_rules" {
   description = "(Optional) Ingress rules to add to the security group"
   type        = any
@@ -162,4 +161,16 @@ variable "egress_rules" {
   description = "(Optional) Egress rules to add to the security group"
   type        = any
   default     = {}
+}
+
+variable "associate_with_waf" {
+  type        = bool
+  description = "Whether to associate this load with AWS WAFv2"
+  default     = false
+}
+
+variable "web_acl_arn" {
+  type        = string
+  description = "The ARN of WAF web acl to associate load balancer with"
+  default     = null
 }
