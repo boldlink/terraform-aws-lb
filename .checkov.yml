@@ -5,5 +5,4 @@ evaluate-variables: true
 external-modules-download-path: .external_modules
 framework: all
 skip-check:
-- CKV2_AWS_28  #Ensure public facing ALB are protected by WAF
-- CKV_AWS_103 #Ensure that load balancer is using TLS 1.2
+- CKV_AWS_103 #"Ensure that load balancer is using at least TLS 1.2"

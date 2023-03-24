@@ -1,14 +1,14 @@
 data "aws_vpc" "supporting" {
   filter {
     name   = "tag:Name"
-    values = [local.supporting_resources_name]
+    values = [var.supporting_resources_name]
   }
 }
 
 data "aws_subnets" "public" {
   filter {
     name   = "tag:Name"
-    values = ["${local.supporting_resources_name}*.pub.*"]
+    values = ["${var.supporting_resources_name}*.pub.*"]
   }
 }
 
@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "s3" {
     ]
     effect = "Allow"
     resources = [
-      "arn:aws:s3:::${local.name}/*",
+      "arn:aws:s3:::${var.name}/*",
     ]
 
     principals {
@@ -43,7 +43,7 @@ data "aws_iam_policy_document" "s3" {
       "s3:PutObject"
     ]
     effect    = "Allow"
-    resources = ["arn:aws:s3:::${local.name}/*"]
+    resources = ["arn:aws:s3:::${var.name}/*"]
     principals {
       identifiers = ["delivery.logs.amazonaws.com"]
       type        = "Service"
@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "s3" {
       "s3:GetBucketAcl"
     ]
     effect    = "Allow"
-    resources = ["arn:aws:s3:::${local.name}"]
+    resources = ["arn:aws:s3:::${var.name}"]
     principals {
       identifiers = ["delivery.logs.amazonaws.com"]
       type        = "Service"

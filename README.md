@@ -79,7 +79,7 @@ module "minimum" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.56.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.60.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
 
 ## Modules
@@ -97,6 +97,7 @@ No modules.
 | [aws_security_group.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_wafv2_web_acl_association.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_association) | resource |
 | [tls_private_key.main](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
 | [tls_self_signed_cert.main](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/self_signed_cert) | resource |
 
@@ -105,6 +106,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_access_logs"></a> [access\_logs](#input\_access\_logs) | (Optional) Define an Access Logs block | `map(string)` | `{}` | no |
+| <a name="input_associate_with_waf"></a> [associate\_with\_waf](#input\_associate\_with\_waf) | Whether to associate this load with AWS WAFv2 | `bool` | `false` | no |
 | <a name="input_cert_common_name"></a> [cert\_common\_name](#input\_cert\_common\_name) | Enter the ssl certificate common name, e.g "example.com" | `string` | `"boldlink.io"` | no |
 | <a name="input_cert_organization"></a> [cert\_organization](#input\_cert\_organization) | The Organization which the certificate belongs to, e.g "Boldlink-SIG" | `string` | `"Boldlink-SIG"` | no |
 | <a name="input_cert_validity_period_hours"></a> [cert\_validity\_period\_hours](#input\_cert\_validity\_period\_hours) | The number of hours the certificate is valid | `number` | `12` | no |
@@ -131,6 +133,7 @@ No modules.
 | <a name="input_target_groups"></a> [target\_groups](#input\_target\_groups) | A list of maps describing the target groups for the LB | `any` | `[]` | no |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | (Optional) Define maximum timeout for creating, updating, and deleting load balancer resources | `any` | `{}` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | Identifier of the VPC in which to create the target group. Required when target\_type is instance, ip or alb. Does not apply when target\_type is lambda. | `string` | `null` | no |
+| <a name="input_web_acl_arn"></a> [web\_acl\_arn](#input\_web\_acl\_arn) | The ARN of WAF web acl to associate load balancer with | `string` | `null` | no |
 
 ## Outputs
 

@@ -5,16 +5,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- Showcase more feature usage in example
-- Add examples for other types of load balancers
-- Fix: CKV2_AWS_28  #Ensure public facing ALB are protected by WAF
-- Add instance target type example
-- Add Lambda function target type example
-- Feature: Listener rules
-- Feature: Target group attachment
-- Feature: use acm module for acm certificate in examples
+- feat: showcase load balancer protection using WAF
+- feat: Showcase more feature usage in example
+- feat: Add examples for other types of load balancers
+- feat: Update module with latest features
+- feat: Add instance target type example
+- feat: Add Lambda function target type example
+- feat: Listener rules
+- feat: Target group attachment
+- feat: use acm module for acm certificate in examples
 
-## [1.08] - 2023-01-25
+## [1.0.9] - 2023-03-23
+### Description
+- fix: CKV2_AWS_28  #Ensure public facing ALB are protected by WAF
+- feat: added latest workflow files
+- feat: used variables to separate static values
+
+## [1.0.8] - 2023-01-25
 ### Description
 - Fix: CKV_AWS_131  #Ensure that ALB drops HTTP headers
 - Fix: CKV_AWS_91  #Ensure the ELBv2 (Application/Network) has access logging enabled
@@ -68,8 +75,9 @@ Feature: Added listener certificate
 ### Changes
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.0.8...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.0.9...HEAD
 
+[1.0.9]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.9
 [1.0.8]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.8
 [1.0.7]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.7
 [1.0.6]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.6
