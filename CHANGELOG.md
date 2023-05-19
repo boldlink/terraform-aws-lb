@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Listener rules
 - feat: Target group attachment
 - feat: use acm module for acm certificate in examples
+- fix: CKV_AWS_103 #"Ensure that load balancer is using at least TLS 1.2"
+- fix: CKV_AWS_2 #Ensure ALB protocol is HTTPS"
+
+## [1.0.10] - 2023-05-19
+### Description
+- fix: make `access_logs` block optional
+- feat: added exception for checkov alerts on s3 notifications and lifecycle
 
 ## [1.0.9] - 2023-03-23
 ### Description
@@ -75,8 +82,9 @@ Feature: Added listener certificate
 ### Changes
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.0.9...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.0.10...HEAD
 
+[1.0.10]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.10
 [1.0.9]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.9
 [1.0.8]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.8
 [1.0.7]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.7

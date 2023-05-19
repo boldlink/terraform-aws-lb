@@ -1,14 +1,7 @@
-module "access_logs_s3" {
-  source        = "boldlink/s3/aws"
-  bucket        = var.name
-  bucket_policy = data.aws_iam_policy_document.s3.json
-  force_destroy = var.force_destroy
-  tags          = local.tags
-}
-
 module "minimum" {
   #checkov:skip=CKV_AWS_150: "Ensure that Load Balancer has deletion protection enabled"
   #checkov:skip=CKV_AWS_2: "Ensure ALB protocol is HTTPS"
+  #checkov:skip=CKV_AWS_91: "Ensure the ELBv2 (Application/Network) has access logging enabled"
   source                     = "../../"
   name                       = var.name
   internal                   = var.internal
@@ -16,11 +9,6 @@ module "minimum" {
   vpc_id                     = local.vpc_id
   subnets                    = local.public_subnets
   tags                       = local.tags
-
-  access_logs = {
-    bucket  = module.access_logs_s3.bucket
-    enabled = var.access_logs_enabled
-  }
 
   ingress_rules = {
     https = var.https_ingress
