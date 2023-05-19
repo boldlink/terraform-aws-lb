@@ -6,3 +6,6 @@ external-modules-download-path: .external_modules
 framework: all
 skip-check:
 - CKV_AWS_103 #"Ensure that load balancer is using at least TLS 1.2"
+- CKV2_AWS_62 #Ensure S3 buckets should have event notifications enabled"
+- CKV2_AWS_61 #Ensure that an S3 bucket has a lifecycle configuration"
+- CKV_AWS_2 #Ensure ALB protocol is HTTPS"

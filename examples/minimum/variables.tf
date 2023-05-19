@@ -24,12 +24,6 @@ variable "tags" {
   }
 }
 
-variable "force_destroy" {
-  type        = bool
-  description = "Whether to force deletion of the s3 bucket"
-  default     = true
-}
-
 variable "internal" {
   type        = bool
   description = "Whether the created LB is internal or not"
@@ -40,12 +34,6 @@ variable "enable_deletion_protection" {
   type        = bool
   description = "Whether to protect LB from deletion"
   default     = false
-}
-
-variable "access_logs_enabled" {
-  type        = bool
-  description = "Whether access logs are enabled for the load balancer"
-  default     = true
 }
 
 variable "https_ingress" {
