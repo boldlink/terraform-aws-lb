@@ -85,8 +85,9 @@ Feature: Added listener certificate
 ### Changes
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.0.10...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.0.11...HEAD
 
+[1.0.11]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.11
 [1.0.10]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.10
 [1.0.9]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.9
 [1.0.8]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.8
