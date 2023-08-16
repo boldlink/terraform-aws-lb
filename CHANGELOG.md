@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_AWS_103 #"Ensure that load balancer is using at least TLS 1.2"
 - fix: CKV_AWS_2 #Ensure ALB protocol is HTTPS"
 
+## [1.0.11] - 2023-08-14
+- fix: VPC version used in supporting resources. This is to fix pre-commit errors for deprecated outputs
+
 ## [1.0.10] - 2023-05-19
 ### Description
 - fix: make `access_logs` block optional
@@ -82,8 +85,9 @@ Feature: Added listener certificate
 ### Changes
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.0.10...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.0.11...HEAD
 
+[1.0.11]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.11
 [1.0.10]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.10
 [1.0.9]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.9
 [1.0.8]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.8
