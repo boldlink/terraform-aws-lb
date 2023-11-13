@@ -52,9 +52,9 @@ module "nlb" {
         unhealthy_threshold = 3
       }
 
-      preserve_client_ip            = true
-      protocol_version              = "HTTP1"
-      tags                          = local.tags
+      preserve_client_ip = true
+      protocol_version   = "HTTP1"
+      tags               = local.tags
     },
     {
       name     = "http-${var.name}"

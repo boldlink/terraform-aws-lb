@@ -26,21 +26,18 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.12.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.25.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_access_logs_s3"></a> [access\_logs\_s3](#module\_access\_logs\_s3) | boldlink/s3/aws | n/a |
-| <a name="module_complete"></a> [complete](#module\_complete) | ../../ | n/a |
+| <a name="module_nlb"></a> [nlb](#module\_nlb) | ../../ | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aws_elb_service_account.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/elb_service_account) | data source |
-| [aws_iam_policy_document.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_subnet.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_subnets.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets) | data source |
 | [aws_vpc.supporting](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
@@ -49,19 +46,10 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_access_logs_enabled"></a> [access\_logs\_enabled](#input\_access\_logs\_enabled) | Whether access logs are enabled for the load balancer | `bool` | `true` | no |
-| <a name="input_create_ssl_certificate"></a> [create\_ssl\_certificate](#input\_create\_ssl\_certificate) | Whether to create ssl certificate with the module | `bool` | `true` | no |
-| <a name="input_egress_rules"></a> [egress\_rules](#input\_egress\_rules) | The egress configuration for outgoing lb traffic | `any` | <pre>{<br>  "cidr_blocks": [<br>    "0.0.0.0/0"<br>  ],<br>  "from_port": 0,<br>  "protocol": "-1",<br>  "to_port": 0<br>}</pre> | no |
 | <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | Whether to protect LB from deletion | `bool` | `false` | no |
-| <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | Whether to force deletion of the s3 bucket | `bool` | `true` | no |
-| <a name="input_http_ingress"></a> [http\_ingress](#input\_http\_ingress) | The ingress configuration for lb security group http rule | `any` | <pre>{<br>  "cidr_blocks": [<br>    "0.0.0.0/0"<br>  ],<br>  "description": "allow http",<br>  "from_port": 80,<br>  "protocol": "tcp",<br>  "to_port": 80<br>}</pre> | no |
-| <a name="input_https_ingress"></a> [https\_ingress](#input\_https\_ingress) | The ingress configuration for lb security group https rule | `any` | <pre>{<br>  "cidr_blocks": [<br>    "0.0.0.0/0"<br>  ],<br>  "description": "allow tls",<br>  "from_port": 443,<br>  "protocol": "tcp",<br>  "to_port": 443<br>}</pre> | no |
-| <a name="input_internal"></a> [internal](#input\_internal) | Whether the created LB is internal or not | `bool` | `false` | no |
-| <a name="input_listeners_configuration"></a> [listeners\_configuration](#input\_listeners\_configuration) | Configuration block for listeners | `any` | <pre>[<br>  {<br>    "default_action": {<br>      "fixed_response": {<br>        "content_type": "text/plain",<br>        "message_body": "Fixed message",<br>        "status_code": "200"<br>      },<br>      "type": "fixed-response"<br>    },<br>    "port": 443,<br>    "protocol": "HTTPS"<br>  },<br>  {<br>    "default_action": {<br>      "tg_index": 0,<br>      "type": "forward"<br>    },<br>    "port": 80,<br>    "protocol": "HTTP"<br>  }<br>]</pre> | no |
-| <a name="input_name"></a> [name](#input\_name) | Name of the stack | `string` | `"complete-alb-example"` | no |
+| <a name="input_name"></a> [name](#input\_name) | Name of the stack | `string` | `"nlb-alb-example"` | no |
 | <a name="input_supporting_resources_name"></a> [supporting\_resources\_name](#input\_supporting\_resources\_name) | Name of the supporting resources | `string` | `"terraform-aws-lb"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to the resources | `map(string)` | <pre>{<br>  "Department": "DevOps",<br>  "Environment": "examples",<br>  "LayerId": "cExample",<br>  "LayerName": "cExample",<br>  "Owner": "Boldlink",<br>  "Project": "Examples",<br>  "user::CostCenter": "terraform-registry"<br>}</pre> | no |
-| <a name="input_target_group_configuration"></a> [target\_group\_configuration](#input\_target\_group\_configuration) | Configuration block for target group | `any` | <pre>[<br>  {<br>    "health_check": {<br>      "enabled": true,<br>      "healthy_threshold": 10,<br>      "interval": 10,<br>      "path": "/",<br>      "port": 80,<br>      "protocol": "HTTP",<br>      "timeout": 5,<br>      "unhealthy_threshold": 7<br>    },<br>    "port": 80,<br>    "protocol": "HTTP",<br>    "stickiness": {<br>      "cookie_duration": 3600,<br>      "enabled": true,<br>      "type": "lb_cookie"<br>    },<br>    "target_type": "ip"<br>  }<br>]</pre> | no |
 
 ## Outputs
 
