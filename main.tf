@@ -1,6 +1,4 @@
-#####################################
 ### Load Balancer
-#####################################
 resource "aws_lb" "main" {
   name                             = var.name
   name_prefix                      = var.name_prefix
@@ -179,9 +177,7 @@ resource "aws_lb_listener" "main" {
   }
 }
 
-########################################
 #### Self Signed Certificate
-########################################
 resource "tls_private_key" "main" {
   count     = var.create_ssl_certificate ? 1 : 0
   algorithm = "RSA"

@@ -55,6 +55,7 @@ data "aws_security_group" "default" {
 
 module "minimum" {
   source             = "boldlink/lb/aws"
+  version            = "<provide_latest_version_here>"
   name               = "minimum-example-lb"
   internal           = false
   subnets            = data.aws_subnets.default.ids
@@ -81,7 +82,7 @@ module "minimum" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.12.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.25.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
 
 ## Modules
