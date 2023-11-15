@@ -98,6 +98,16 @@ resource "aws_lb_target_group" "main" {
   tags = try(var.target_groups[count.index]["tags"], null)
 }
 
+resource "aws_lb_target_group_attachment" "main" {
+  for_each = { for k, v in var.target_groups : k => v if lookup(v, "create_attachment", false) }
+
+  target_group_arn  = aws_lb_target_group.main[each.key].arn
+  target_id         = each.value.target_id
+  port              = try(each.value.port, null)
+  availability_zone = try(each.value.availability_zone, null)
+  depends_on        = [aws_lb_target_group.main]
+}
+
 # Listener
 resource "aws_lb_listener" "main" {
   count             = length(var.listeners) > 0 ? length(var.listeners) : 0
