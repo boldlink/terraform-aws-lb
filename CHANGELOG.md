@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.0] - 2023-11-13
 - feat: showcase load balancer protection using WAF
 - feat: showcase network load balancer configuration
+- feat: Added target attachment feature for the target group
 
 ## [1.0.11] - 2023-08-14
 - fix: VPC version used in supporting resources. This is to fix pre-commit errors for deprecated outputs
