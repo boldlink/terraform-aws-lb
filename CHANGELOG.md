@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 - feat: Add examples for gateway load balancer
+- feat: showcase usage with target groups targets in complete example
 - feat: Update module with latest features
 - feat: Add instance target type example
 - feat: Add Lambda function target type example
