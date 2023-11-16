@@ -1,7 +1,7 @@
 module "ec2_instances" {
   source            = "boldlink/ec2/aws"
-  version           = "2.0.3"
-  count             = 2
+  version           = "2.0.4"
+  count             = 1
   name              = "${var.name}-${count.index}"
   ami               = data.aws_ami.amazon_linux.id
   instance_type     = "t3.small"
@@ -17,16 +17,10 @@ module "ec2_instances" {
 
   security_group_ingress = [
     {
-      from_port                    = 80
-      to_port                      = 80
-      protocol                     = "tcp"
-      referenced_security_group_id = aws_security_group.nlb.id
-    },
-    {
-      from_port                    = 443
-      to_port                      = 443
-      protocol                     = "tcp"
-      referenced_security_group_id = aws_security_group.nlb.id
+      from_port       = 0
+      to_port         = 0
+      protocol        = "-1"
+      security_groups = [aws_security_group.nlb.id]
     }
   ]
 
@@ -38,6 +32,7 @@ module "ec2_instances" {
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]
+
 }
 
 module "nlb" {

@@ -32,7 +32,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ec2_instances"></a> [ec2\_instances](#module\_ec2\_instances) | boldlink/ec2/aws | 2.0.3 |
+| <a name="module_ec2_instances"></a> [ec2\_instances](#module\_ec2\_instances) | boldlink/ec2/aws | 2.0.4 |
 | <a name="module_nlb"></a> [nlb](#module\_nlb) | ../../ | n/a |
 
 ## Resources
