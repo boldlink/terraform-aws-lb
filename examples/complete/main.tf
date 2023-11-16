@@ -20,6 +20,10 @@ module "complete" {
   target_groups              = var.target_group_configuration
   listeners                  = var.listeners_configuration
 
+  # WAF association
+  associate_with_waf = true
+  web_acl_arn        = module.waf.arn
+
   access_logs = {
     bucket  = module.access_logs_s3.bucket
     enabled = var.access_logs_enabled

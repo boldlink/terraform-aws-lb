@@ -142,3 +142,15 @@ variable "listeners_configuration" {
     }
   ]
 }
+
+variable "cloudwatch_metrics_enabled" {
+  type        = bool
+  description = "Whether to enable cloudwatch metrics"
+  default     = false
+}
+
+variable "sampled_requests_enabled" {
+  type        = bool
+  description = "Whether to enable simple requests"
+  default     = false
+}
