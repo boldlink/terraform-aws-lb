@@ -4,7 +4,7 @@ resource "aws_lb" "main" {
   name_prefix                      = var.name_prefix
   internal                         = var.internal
   load_balancer_type               = var.load_balancer_type
-  security_groups                  = compact(concat(var.security_groups, [aws_security_group.main.id]))
+  security_groups                  = var.load_balancer_type == "gateway" ? null : (concat(var.security_groups, [aws_security_group.main[0].id]))
   subnets                          = var.subnets
   enable_deletion_protection       = var.enable_deletion_protection
   drop_invalid_header_fields       = var.drop_invalid_header_fields
@@ -223,6 +223,7 @@ resource "aws_acm_certificate" "main" {
 
 # Security group
 resource "aws_security_group" "main" {
+  count       = var.load_balancer_type == "gateway" ? 0 : 1
   name        = "${var.name}-security-group"
   vpc_id      = var.vpc_id
   description = "Load balancer security group"
@@ -242,7 +243,7 @@ resource "aws_security_group_rule" "ingress" {
   to_port           = lookup(each.value, "to_port")
   protocol          = lookup(each.value, "protocol")
   cidr_blocks       = lookup(each.value, "cidr_blocks", [])
-  security_group_id = aws_security_group.main.id
+  security_group_id = aws_security_group.main[0].id
 }
 
 resource "aws_security_group_rule" "egress" {
@@ -253,5 +254,5 @@ resource "aws_security_group_rule" "egress" {
   to_port           = lookup(each.value, "to_port")
   protocol          = "-1"
   cidr_blocks       = lookup(each.value, "cidr_blocks", [])
-  security_group_id = aws_security_group.main.id
+  security_group_id = aws_security_group.main[0].id
 }

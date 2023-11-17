@@ -1,6 +1,7 @@
 resource "aws_security_group" "nlb" {
+  #checkov:skip=CKV2_AWS_5: "Ensure that Security Groups are attached to another resource"
   name        = "${var.name}-external-security-group"
-  description = "Allow elb inbound traffic"
+  description = "Allow lb inbound traffic"
   vpc_id      = local.vpc_id
   tags        = local.tags
 }
