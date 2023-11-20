@@ -32,8 +32,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ec2_instances"></a> [ec2\_instances](#module\_ec2\_instances) | boldlink/ec2/aws | 2.0.4 |
 | <a name="module_gateway_lb"></a> [gateway\_lb](#module\_gateway\_lb) | ../../ | n/a |
+| <a name="module_virtual_appliance"></a> [virtual\_appliance](#module\_virtual\_appliance) | boldlink/ec2/aws | 2.0.4 |
 
 ## Resources
 
