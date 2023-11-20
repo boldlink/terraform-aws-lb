@@ -1,4 +1,4 @@
-module "ec2_instances" {
+module "virtual_appliance" {
   source            = "boldlink/ec2/aws"
   version           = "2.0.4"
   count             = 1
@@ -67,16 +67,14 @@ module "gateway_lb" {
         enabled             = true
         healthy_threshold   = 5
         interval            = 30
-        matcher             = "200-399"
-        path                = "/"
-        port                = "traffic-port"
-        protocol            = "HTTP"
+        port                = 80
+        protocol            = "TCP"
         timeout             = 5
         unhealthy_threshold = 3
       }
 
       #targets
-      target_id         = module.ec2_instances[0].id
+      target_id         = module.virtual_appliance[0].id
       target_type       = "instance"
       create_attachment = true
       tags              = local.tags
