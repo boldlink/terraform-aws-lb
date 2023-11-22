@@ -40,7 +40,7 @@ module "gateway_lb" {
   name                             = var.name
   load_balancer_type               = "gateway"
   internal                         = false
-  subnets                          = local.public_subnets
+  subnets                          = local.private_subnets
   enable_deletion_protection       = var.enable_deletion_protection
   enable_cross_zone_load_balancing = true
   idle_timeout                     = 60
@@ -80,4 +80,19 @@ module "gateway_lb" {
       tags              = local.tags
     }
   ]
+}
+
+resource "aws_vpc_endpoint_service" "endpointservice" {
+  acceptance_required        = true
+  gateway_load_balancer_arns = [module.gateway_lb.lb_id]
+  depends_on                 = [module.gateway_lb]
+  tags                       = local.tags
+}
+
+resource "aws_vpc_endpoint" "endpoint" {
+  service_name      = aws_vpc_endpoint_service.endpointservice.service_name
+  vpc_endpoint_type = aws_vpc_endpoint_service.endpointservice.service_type
+  subnet_ids        = [local.private_subnets[0]]
+  vpc_id            = local.vpc_id
+  tags              = local.tags
 }
