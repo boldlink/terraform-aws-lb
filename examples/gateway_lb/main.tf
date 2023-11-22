@@ -39,7 +39,6 @@ module "gateway_lb" {
   source                           = "../../"
   name                             = var.name
   load_balancer_type               = "gateway"
-  internal                         = false
   subnets                          = local.private_subnets
   enable_deletion_protection       = var.enable_deletion_protection
   enable_cross_zone_load_balancing = true
