@@ -2,7 +2,7 @@
 resource "aws_lb" "main" {
   name                             = var.name
   name_prefix                      = var.name_prefix
-  internal                         = var.internal
+  internal                         = var.load_balancer_type == "gateway" ? true : var.internal
   load_balancer_type               = var.load_balancer_type
   security_groups                  = var.load_balancer_type == "gateway" ? null : (concat(var.security_groups, [aws_security_group.main[0].id]))
   subnets                          = var.subnets
