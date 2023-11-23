@@ -5,14 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- feat: Add examples for gateway load balancer
-- feat: showcase usage with target groups targets in complete example
 - feat: Update module with latest features
-- feat: Add instance target type example
 - feat: Add Lambda function target type example
 - feat: use acm module for acm certificate in examples
 - fix: CKV_AWS_103 #"Ensure that load balancer is using at least TLS 1.2"
 - fix: CKV_AWS_2 #Ensure ALB protocol is HTTPS"
+
+## [1.1.1] - 2023-11-17
+- fix: conditions in sg resources when load balancer type is gateway
+- feat: showcase gateway load balancer configuration
 
 ## [1.1.0] - 2023-11-13
 - feat: showcase load balancer protection using WAF
@@ -87,8 +88,9 @@ Feature: Added listener certificate
 ### Changes
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.1.1...HEAD
 
+[1.1.1]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.1
 [1.1.0]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.0
 [1.0.11]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.11
 [1.0.10]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.10
