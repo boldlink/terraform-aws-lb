@@ -120,7 +120,7 @@ resource "aws_lb_listener" "main" {
   tags              = try(var.listeners[count.index]["tags"], {})
 
   dynamic "default_action" {
-    for_each = try([var.listeners[count.index]["default_actions"]], [var.listeners[count.index]["default_action"]], [])
+    for_each = lookup(var.listeners[count.index], "default_actions", {})
 
     content {
       type             = default_action.value.type

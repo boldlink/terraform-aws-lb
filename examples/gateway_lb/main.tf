@@ -49,10 +49,12 @@ module "gateway_lb" {
   # Listeners for Gateway Load Balancers listen for all IP packets across all ports. You cannot specify a protocol or port when you create a listener for a Gateway Load Balancer.
   listeners = [
     {
-      default_action = {
-        type     = "forward"
-        tg_index = 0
-      }
+      default_actions = [
+        {
+          type     = "forward"
+          tg_index = 0
+        }
+      ]
     }
   ]
 

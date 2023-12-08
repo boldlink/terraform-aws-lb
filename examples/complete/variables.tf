@@ -123,20 +123,25 @@ variable "listeners_configuration" {
     {
       port     = 443
       protocol = "HTTPS"
-      default_action = {
-        type = "fixed-response"
-        fixed_response = {
-          content_type = "text/plain"
-          message_body = "Fixed message"
-          status_code  = "200"
+      default_actions = [
+        {
+          type = "fixed-response"
+          fixed_response = {
+            content_type = "text/plain"
+            message_body = "Fixed message"
+            status_code  = "200"
+          }
         }
-      }
+      ]
     },
     {
-      default_action = {
-        type     = "forward"
-        tg_index = 0
-      }
+      default_actions = [
+        {
+          type     = "forward"
+          tg_index = 0
+        }
+      ]
+
       port     = 80
       protocol = "HTTP"
     }
