@@ -96,7 +96,7 @@ module "authenticate_cognito" {
   #checkov:skip=CKV_AWS_150: "Ensure that Load Balancer has deletion protection enabled"
   #checkov:skip=CKV_AWS_2: "Ensure ALB protocol is HTTPS"
   source                     = "../../"
-  name                       = "oidc-${var.name}"
+  name                       = "authenticate-cognito-${var.name}"
   internal                   = var.internal
   subnets                    = local.public_subnets
   vpc_id                     = local.vpc_id
