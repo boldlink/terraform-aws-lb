@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: use acm module for acm certificate in examples
 - fix: CKV_AWS_103 #"Ensure that load balancer is using at least TLS 1.2"
 - fix: CKV_AWS_2 #Ensure ALB protocol is HTTPS"
+- feat: add listener rules resource and showcase in the examples
+
+## [1.1.2] - 2023-12-05
+- feat: showcase `authenticate-cognito` type listener
+- fix: listener should have one action error resulting from misconfiguration
 
 ## [1.1.1] - 2023-11-17
 - fix: conditions in sg resources when load balancer type is gateway
@@ -88,8 +93,9 @@ Feature: Added listener certificate
 ### Changes
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.1.1...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.1.2...HEAD
 
+[1.1.2]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.2
 [1.1.1]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.1
 [1.1.0]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.0
 [1.0.11]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.0.11
