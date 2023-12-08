@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_AWS_2 #Ensure ALB protocol is HTTPS"
 - feat: add listener rules resource and showcase in the examples
 
-## [1.1.2] - 2023-12-05
+## [1.1.2] - 2023-12-08
 - feat: showcase `authenticate-cognito` type listener
 - fix: listener should have one action error resulting from misconfiguration
 
