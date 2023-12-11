@@ -127,6 +127,7 @@ resource "aws_lb_listener" "main" {
       order            = try(default_action.value.order, null)
       target_group_arn = try(default_action.value.target_group_arn, aws_lb_target_group.main[lookup(default_action.value, "tg_index")].id, null)
 
+      ## For HTTPS listeners only
       dynamic "authenticate_oidc" {
         for_each = try([default_action.value.authenticate_oidc], [])
 
@@ -169,6 +170,7 @@ resource "aws_lb_listener" "main" {
         }
       }
 
+      ## For HTTPS listeners only
       dynamic "authenticate_cognito" {
         for_each = try([default_action.value.authenticate_cognito], [])
 
@@ -188,7 +190,7 @@ resource "aws_lb_listener" "main" {
   }
 }
 
-## Commented for other release so as not to lose the code
+## Commented for other release
 # resource "aws_lb_listener_rule" "main" {
 #   for_each = {
 #     for idx, listener in var.listeners : idx => listener.rules

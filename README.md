@@ -31,6 +31,7 @@ Example available [here](./examples)
 
 ## Usage
 **NOTE**: These examples use the latest version of this module
+- Only HTTPS listeners support the authenticate-cognito and authenticate-oidc rule action types.
 
 ```hcl
 data "aws_vpc" "default" {

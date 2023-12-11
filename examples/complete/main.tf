@@ -124,22 +124,6 @@ module "authenticate_cognito" {
           tg_index = 0
         }
       ]
-    },
-    {
-      port = 80
-
-      default_actions = [
-        {
-          type  = "fixed-response"
-          order = 1
-
-          fixed_response = {
-            content_type = "text/plain"
-            message_body = "This is a fixed response."
-            status_code  = "200"
-          }
-        }
-      ]
     }
   ]
 

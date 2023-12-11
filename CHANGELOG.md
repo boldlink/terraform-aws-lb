@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_AWS_103 #"Ensure that load balancer is using at least TLS 1.2"
 - fix: CKV_AWS_2 #Ensure ALB protocol is HTTPS"
 - feat: add listener rules resource and showcase in the examples
+- feat: showcase usage of complete lb to return a response from app/webpage
+- feat: showcase `authenticate-cognito` with a working app/webpage
 
 ## [1.1.2] - 2023-12-08
 - feat: showcase `authenticate-cognito` type listener
