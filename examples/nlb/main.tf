@@ -51,20 +51,26 @@ module "nlb" {
 
   listeners = [
     {
-      default_action = {
-        type     = "forward"
-        tg_index = 0
-      }
+      default_actions = [
+        {
+          type     = "forward"
+          tg_index = 0
+        }
+      ]
+
       port     = 53
       protocol = "UDP"
     },
     {
       port     = 80
       protocol = "TCP"
-      default_action = {
-        type     = "forward"
-        tg_index = 1
-      }
+
+      default_actions = [
+        {
+          type     = "forward"
+          tg_index = 1
+        }
+      ]
     }
   ]
 

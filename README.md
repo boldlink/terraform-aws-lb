@@ -31,6 +31,7 @@ Example available [here](./examples)
 
 ## Usage
 **NOTE**: These examples use the latest version of this module
+- Only HTTPS listeners support the authenticate-cognito and authenticate-oidc rule action types.
 
 ```hcl
 data "aws_vpc" "default" {
@@ -82,8 +83,8 @@ module "minimum" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.26.0 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.30.0 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.5 |
 
 ## Modules
 
