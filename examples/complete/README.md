@@ -35,6 +35,7 @@
 |------|--------|---------|
 | <a name="module_access_logs_s3"></a> [access\_logs\_s3](#module\_access\_logs\_s3) | boldlink/s3/aws | n/a |
 | <a name="module_authenticate_cognito"></a> [authenticate\_cognito](#module\_authenticate\_cognito) | ../../ | n/a |
+| <a name="module_authenticate_oidc"></a> [authenticate\_oidc](#module\_authenticate\_oidc) | ../../ | n/a |
 | <a name="module_complete"></a> [complete](#module\_complete) | ../../ | n/a |
 | <a name="module_waf"></a> [waf](#module\_waf) | boldlink/waf/aws | 1.0.3 |
 

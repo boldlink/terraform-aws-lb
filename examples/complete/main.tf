@@ -163,3 +163,72 @@ module "authenticate_cognito" {
     aws_cognito_user_pool_domain.domain
   ]
 }
+
+module "authenticate_oidc" {
+  #checkov:skip=CKV_AWS_150: "Ensure that Load Balancer has deletion protection enabled"
+  #checkov:skip=CKV_AWS_2: "Ensure ALB protocol is HTTPS"
+  source                     = "../../"
+  name                       = "${var.name}-oidc"
+  internal                   = var.internal
+  subnets                    = local.public_subnets
+  vpc_id                     = local.vpc_id
+  enable_deletion_protection = var.enable_deletion_protection
+  tags                       = local.tags
+
+  listeners = [
+    {
+      port            = 443
+      protocol        = "HTTPS"
+      certificate_arn = aws_acm_certificate.main.arn
+
+      default_actions = [
+        {
+          type = "authenticate-oidc"
+
+          authenticate_oidc = {
+            authorization_endpoint = "https://example.com/authorization_endpoint"
+            client_id              = "client_id"
+            client_secret          = "client_secret"
+            issuer                 = "https://example.com"
+            token_endpoint         = "https://example.com/token_endpoint"
+            user_info_endpoint     = "https://example.com/user_info_endpoint"
+          }
+        },
+        {
+          type     = "forward"
+          tg_index = 0
+        }
+      ]
+    }
+  ]
+
+  target_groups = [
+    {
+      name     = "oidc-${var.name}"
+      port     = 80
+      protocol = "HTTP"
+
+      health_check = {
+        enabled             = true
+        healthy_threshold   = 3
+        interval            = 30
+        matcher             = "200-399"
+        path                = "/"
+        port                = "traffic-port"
+        protocol            = "HTTP"
+        timeout             = 5
+        unhealthy_threshold = 3
+      }
+      tags = local.tags
+    }
+  ]
+
+  ingress_rules = {
+    https = var.https_ingress
+    http  = var.http_ingress
+  }
+
+  egress_rules = {
+    default = var.egress_rules
+  }
+}
