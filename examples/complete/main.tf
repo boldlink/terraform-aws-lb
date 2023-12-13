@@ -116,7 +116,7 @@ module "authenticate_cognito" {
           authenticate_cognito = {
             user_pool_arn       = aws_cognito_user_pool.pool.arn
             user_pool_client_id = aws_cognito_user_pool_client.client.id
-            user_pool_domain    = aws_cognito_user_pool_domain.domain.domain
+            user_pool_domain    = local.domain
           }
         },
         {
@@ -156,12 +156,6 @@ module "authenticate_cognito" {
   egress_rules = {
     default = var.egress_rules
   }
-
-  depends_on = [
-    aws_cognito_user_pool.pool,
-    aws_cognito_user_pool_client.client,
-    aws_cognito_user_pool_domain.domain
-  ]
 }
 
 module "authenticate_oidc" {
@@ -186,12 +180,12 @@ module "authenticate_oidc" {
           type = "authenticate-oidc"
 
           authenticate_oidc = {
-            authorization_endpoint = "https://example.com/authorization_endpoint"
-            client_id              = "client_id"
-            client_secret          = "client_secret"
-            issuer                 = "https://example.com"
-            token_endpoint         = "https://example.com/token_endpoint"
-            user_info_endpoint     = "https://example.com/user_info_endpoint"
+            authorization_endpoint = "https://${local.domain}.auth.${local.region}.amazoncognito.com/oauth2/authorize"
+            client_id              = aws_cognito_user_pool_client.client.id
+            client_secret          = aws_cognito_user_pool_client.client.client_secret
+            issuer                 = "https://${aws_cognito_user_pool.pool.endpoint}"
+            token_endpoint         = "https://${local.domain}.auth.${local.region}.amazoncognito.com/oauth2/token"
+            user_info_endpoint     = "https://${local.domain}.auth.${local.region}.amazoncognito.com/oauth2/userInfo"
           }
         },
         {
