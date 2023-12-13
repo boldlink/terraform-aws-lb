@@ -5,6 +5,8 @@ data "aws_vpc" "supporting" {
   }
 }
 
+data "aws_region" "current" {}
+
 data "aws_subnets" "public" {
   filter {
     name   = "tag:Name"

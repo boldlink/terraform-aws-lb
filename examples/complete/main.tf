@@ -116,7 +116,7 @@ module "authenticate_cognito" {
           authenticate_cognito = {
             user_pool_arn       = aws_cognito_user_pool.pool.arn
             user_pool_client_id = aws_cognito_user_pool_client.client.id
-            user_pool_domain    = aws_cognito_user_pool_domain.domain.domain
+            user_pool_domain    = local.domain
           }
         },
         {
@@ -156,10 +156,73 @@ module "authenticate_cognito" {
   egress_rules = {
     default = var.egress_rules
   }
+}
 
-  depends_on = [
-    aws_cognito_user_pool.pool,
-    aws_cognito_user_pool_client.client,
-    aws_cognito_user_pool_domain.domain
+module "authenticate_oidc" {
+  #checkov:skip=CKV_AWS_150: "Ensure that Load Balancer has deletion protection enabled"
+  #checkov:skip=CKV_AWS_2: "Ensure ALB protocol is HTTPS"
+  source                     = "../../"
+  name                       = "${var.name}-oidc"
+  internal                   = var.internal
+  subnets                    = local.public_subnets
+  vpc_id                     = local.vpc_id
+  enable_deletion_protection = var.enable_deletion_protection
+  tags                       = local.tags
+
+  listeners = [
+    {
+      port            = 443
+      protocol        = "HTTPS"
+      certificate_arn = aws_acm_certificate.main.arn
+
+      default_actions = [
+        {
+          type = "authenticate-oidc"
+
+          authenticate_oidc = {
+            authorization_endpoint = "https://${local.domain}.auth.${local.region}.amazoncognito.com/oauth2/authorize"
+            client_id              = aws_cognito_user_pool_client.client.id
+            client_secret          = aws_cognito_user_pool_client.client.client_secret
+            issuer                 = "https://${aws_cognito_user_pool.pool.endpoint}"
+            token_endpoint         = "https://${local.domain}.auth.${local.region}.amazoncognito.com/oauth2/token"
+            user_info_endpoint     = "https://${local.domain}.auth.${local.region}.amazoncognito.com/oauth2/userInfo"
+          }
+        },
+        {
+          type     = "forward"
+          tg_index = 0
+        }
+      ]
+    }
   ]
+
+  target_groups = [
+    {
+      name     = "oidc-${var.name}"
+      port     = 80
+      protocol = "HTTP"
+
+      health_check = {
+        enabled             = true
+        healthy_threshold   = 3
+        interval            = 30
+        matcher             = "200-399"
+        path                = "/"
+        port                = "traffic-port"
+        protocol            = "HTTP"
+        timeout             = 5
+        unhealthy_threshold = 3
+      }
+      tags = local.tags
+    }
+  ]
+
+  ingress_rules = {
+    https = var.https_ingress
+    http  = var.http_ingress
+  }
+
+  egress_rules = {
+    default = var.egress_rules
+  }
 }
