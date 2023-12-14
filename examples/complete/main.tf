@@ -105,6 +105,22 @@ module "authenticate_cognito" {
 
   listeners = [
     {
+      port     = "80"
+      protocol = "HTTP"
+
+      default_actions = [
+        {
+          type = "redirect"
+
+          redirect = {
+            port        = "443"
+            protocol    = "HTTPS"
+            status_code = "HTTP_301"
+          }
+        }
+      ]
+    },
+    {
       port            = 443
       protocol        = "HTTPS"
       certificate_arn = aws_acm_certificate.main.arn
