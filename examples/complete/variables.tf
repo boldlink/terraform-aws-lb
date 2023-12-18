@@ -89,33 +89,6 @@ variable "create_ssl_certificate" {
   default     = true
 }
 
-variable "target_group_configuration" {
-  type        = any
-  description = "Configuration block for target group"
-  default = [
-    {
-      port        = 80
-      protocol    = "HTTP"
-      target_type = "ip"
-      stickiness = {
-        cookie_duration = 3600
-        enabled         = true
-        type            = "lb_cookie"
-      }
-      health_check = {
-        enabled             = true
-        healthy_threshold   = 10
-        interval            = 10
-        path                = "/"
-        port                = 80
-        protocol            = "HTTP"
-        timeout             = 5
-        unhealthy_threshold = 7
-      }
-    }
-  ]
-}
-
 variable "listeners_configuration" {
   type        = any
   description = "Configuration block for listeners"
@@ -158,4 +131,21 @@ variable "sampled_requests_enabled" {
   type        = bool
   description = "Whether to enable simple requests"
   default     = false
+}
+
+variable "architecture" {
+  type        = string
+  description = "The architecture of the instance to launch"
+  default     = "x86_64"
+}
+
+variable "root_block_device" {
+  description = "Configuration block to customize details about the root block device of the instance."
+  type        = list(any)
+  default = [
+    {
+      volume_size = 15
+      encrypted   = true
+    }
+  ]
 }

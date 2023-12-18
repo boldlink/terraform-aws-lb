@@ -13,9 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: add listener rules resource and showcase in the examples
 - feat: showcase usage of complete lb to return a response from app/webpage
 - feat: showcase `authenticate-cognito` with a working app/webpage
+- feat: showcase use of `customer_owned_ipv4_pool` attribute
 
 ## [1.1.4] - 2023-12-14
 - fix: showcase `redirect` default action
+- feat: Added instance to complete example
+- fix: subnet mappings to have the ability to specify multiple subnets
 
 ## [1.1.3] - 2023-12-12
 - feat: showcase `authenticate-oidc` default action
