@@ -190,50 +190,6 @@ resource "aws_lb_listener" "main" {
   }
 }
 
-## Commented for other release
-# resource "aws_lb_listener_rule" "main" {
-#   for_each = {
-#     for idx, listener in var.listeners : idx => listener.rules
-#     if length(lookup(listener, "rules", [])) > 0
-#   }
-#
-#   listener_arn = try(each.value.listener_arn, aws_lb_listener.main[each.key].arn)
-#   priority     = try(each.value.priority, null)
-#
-#   dynamic "action" {
-#     for_each = [ for action in each.value.actions : action[0] ]
-#
-#     content {
-#       type  = action.value.type
-#       order = try(action.value.order, null)
-#
-#       dynamic "fixed_response" {
-#         for_each = try([action.value.fixed_response], [])
-#
-#         content {
-#           content_type = fixed_response.value.content_type
-#           message_body = try(fixed_response.value.message_body, null)
-#           status_code  = try(fixed_response.value.status_code, null)
-#         }
-#       }
-#     }
-#   }
-#
-#   dynamic "condition" {
-#     for_each = [ for condition in each.value.conditions : condition[0] ]
-#
-#     content {
-#       dynamic "host_header" {
-#         for_each = try([condition.value.host_header], [])
-#
-#         content {
-#           values = host_header.value.values
-#         }
-#       }
-#     }
-#   }
-# }
-
 #### Self Signed Certificate
 resource "tls_private_key" "main" {
   count     = var.create_ssl_certificate ? 1 : 0

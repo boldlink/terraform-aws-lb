@@ -20,6 +20,12 @@ module "complete" {
   target_groups              = var.target_group_configuration
   listeners                  = var.listeners_configuration
 
+  timeouts = {
+    create = "7m"
+    update = "7m"
+    delete = "7m"
+  }
+
   # WAF association
   associate_with_waf = true
   web_acl_arn        = module.waf.arn
@@ -98,10 +104,19 @@ module "authenticate_cognito" {
   source                     = "../../"
   name                       = "${var.name}-cognito"
   internal                   = var.internal
-  subnets                    = local.public_subnets
   vpc_id                     = local.vpc_id
   enable_deletion_protection = var.enable_deletion_protection
   tags                       = local.tags
+
+  subnet_mapping = [
+    {
+      subnet_id = local.public_subnets[0]
+    },
+    {
+      subnet_id = local.public_subnets[1]
+      #private_ipv4_address = "10.0.2.15" # not supported for application load balancer
+    }
+  ]
 
   listeners = [
     {
