@@ -4,7 +4,7 @@ resource "aws_lb" "main" {
   name_prefix                      = var.name_prefix
   internal                         = var.load_balancer_type == "gateway" ? null : var.internal
   load_balancer_type               = var.load_balancer_type
-  security_groups                  = var.load_balancer_type == "gateway" ? null : (concat(var.security_groups, [aws_security_group.main[0].id]))
+  security_groups                  = var.load_balancer_type == "gateway" ? [] : try([aws_security_group.main[0].id], [])
   subnets                          = var.subnets
   enable_deletion_protection       = var.enable_deletion_protection
   drop_invalid_header_fields       = var.drop_invalid_header_fields
@@ -25,12 +25,12 @@ resource "aws_lb" "main" {
   }
 
   dynamic "subnet_mapping" {
-    for_each = var.subnet_mapping
+    for_each = var.subnets != [] ? [] : var.subnet_mappings
     content {
       subnet_id            = subnet_mapping.value.subnet_id
-      allocation_id        = lookup(subnet_mapping.value, "allocation_id", null)
-      private_ipv4_address = lookup(subnet_mapping.value, "private_ipv4_address", null)
-      ipv6_address         = lookup(subnet_mapping.value, "ipv6_address", null)
+      allocation_id        = try(subnet_mapping.value.allocation_id, null)
+      private_ipv4_address = try(subnet_mapping.value.private_ipv4_address, null)
+      ipv6_address         = try(subnet_mapping.value.ipv6_address, null)
     }
   }
 
@@ -238,23 +238,27 @@ resource "aws_security_group" "main" {
 }
 
 resource "aws_security_group_rule" "ingress" {
-  for_each          = var.ingress_rules
-  type              = "ingress"
-  description       = "Allow custom inbound traffic from specific ports."
-  from_port         = lookup(each.value, "from_port")
-  to_port           = lookup(each.value, "to_port")
-  protocol          = lookup(each.value, "protocol")
-  cidr_blocks       = lookup(each.value, "cidr_blocks", [])
-  security_group_id = aws_security_group.main[0].id
+  for_each                 = var.ingress_rules
+  type                     = "ingress"
+  description              = "Allow custom inbound traffic from specific ports."
+  from_port                = try(each.value.from_port, null)
+  to_port                  = try(each.value.to_port, null)
+  protocol                 = try(each.value.protocol, null)
+  cidr_blocks              = try(each.value.cidr_blocks, [])
+  security_group_id        = aws_security_group.main[0].id
+  source_security_group_id = try(each.value.source_security_group_id, null)
+  self                     = try(each.value.self, null)
 }
 
 resource "aws_security_group_rule" "egress" {
-  for_each          = var.egress_rules
-  type              = "egress"
-  description       = "Allow custom egress traffic"
-  from_port         = lookup(each.value, "from_port")
-  to_port           = lookup(each.value, "to_port")
-  protocol          = "-1"
-  cidr_blocks       = lookup(each.value, "cidr_blocks", [])
-  security_group_id = aws_security_group.main[0].id
+  for_each                 = var.egress_rules
+  type                     = "egress"
+  description              = "Allow custom egress traffic"
+  from_port                = try(each.value.from_port, null)
+  to_port                  = try(each.value.to_port, null)
+  protocol                 = try(each.value.protocol, "-1")
+  cidr_blocks              = try(each.value.cidr_blocks, [])
+  security_group_id        = aws_security_group.main[0].id
+  source_security_group_id = try(each.value.source_security_group_id, null)
+  self                     = try(each.value.self, null)
 }

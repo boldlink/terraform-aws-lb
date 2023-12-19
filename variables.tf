@@ -23,12 +23,6 @@ variable "load_balancer_type" {
   default     = "application"
 }
 
-variable "security_groups" {
-  description = "(Optional) A list of security group IDs to assign to the LB. Only valid for Load Balancers of type application."
-  type        = list(string)
-  default     = []
-}
-
 variable "subnets" {
   description = "(Optional) A list of subnet IDs to attach to the LB. Subnets cannot be updated for Load Balancers of type network. Changing this value for load balancers of type network will force a recreation of the resource."
   type        = list(string)
@@ -53,9 +47,9 @@ variable "timeouts" {
   default     = {}
 }
 
-variable "subnet_mapping" {
+variable "subnet_mappings" {
   description = "(Optional) Define subnet mapping block"
-  type        = any
+  type        = list(map(string))
   default     = []
 }
 

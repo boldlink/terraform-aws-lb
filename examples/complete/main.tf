@@ -20,7 +20,7 @@ module "ec2_instances" {
       from_port       = 0
       to_port         = 0
       protocol        = "-1"
-      security_groups = [aws_security_group.alb.id]
+      security_groups = [module.complete.sg_id]
     }
   ]
 
@@ -55,7 +55,6 @@ module "complete" {
   create_ssl_certificate     = var.create_ssl_certificate
   tags                       = local.tags
   listeners                  = var.listeners_configuration
-  security_groups            = [aws_security_group.alb.id]
 
   target_groups = [
     {
@@ -175,8 +174,10 @@ module "authenticate_cognito" {
   vpc_id                     = local.vpc_id
   enable_deletion_protection = var.enable_deletion_protection
   tags                       = local.tags
+  subnets                    = local.public_subnets
 
-  subnet_mapping = [
+  # We recommend you use `var.subnets` as a best practice.
+  subnet_mappings = [
     {
       subnet_id = local.public_subnets[0]
     },
