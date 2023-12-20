@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: showcase `redirect` default action
 - feat: Added instance to complete example
 - fix: subnet mappings to have the ability to specify multiple subnets
+- feat: Added security group ID as output
 - feat: removed ability to provide external security group. The module creates a security group with the flexibility to configure the rules
 
 ## [1.1.3] - 2023-12-12
