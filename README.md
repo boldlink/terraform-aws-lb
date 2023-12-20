@@ -83,7 +83,7 @@ module "minimum" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.30.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.31.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.5 |
 
 ## Modules
@@ -131,8 +131,7 @@ No modules.
 | <a name="input_load_balancer_type"></a> [load\_balancer\_type](#input\_load\_balancer\_type) | Set the App lb type, can be application or network | `string` | `"application"` | no |
 | <a name="input_name"></a> [name](#input\_name) | (Optional) The name of the LB. This name must be unique within your AWS account, can have a maximum of 32 characters, must contain only alphanumeric characters or hyphens, and must not begin or end with a hyphen. If not specified, Terraform will autogenerate a name beginning with tf-lb. | `string` | `null` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Creates a unique name beginning with the specified prefix. Conflicts with `name` | `string` | `null` | no |
-| <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | (Optional) A list of security group IDs to assign to the LB. Only valid for Load Balancers of type application. | `list(string)` | `[]` | no |
-| <a name="input_subnet_mapping"></a> [subnet\_mapping](#input\_subnet\_mapping) | (Optional) Define subnet mapping block | `map(string)` | `{}` | no |
+| <a name="input_subnet_mappings"></a> [subnet\_mappings](#input\_subnet\_mappings) | (Optional) Define subnet mapping block | `list(map(string))` | `[]` | no |
 | <a name="input_subnets"></a> [subnets](#input\_subnets) | (Optional) A list of subnet IDs to attach to the LB. Subnets cannot be updated for Load Balancers of type network. Changing this value for load balancers of type network will force a recreation of the resource. | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Optional) A map of tags to assign to the resource. | `map(string)` | `{}` | no |
 | <a name="input_target_groups"></a> [target\_groups](#input\_target\_groups) | A list of maps describing the target groups for the LB | `any` | `[]` | no |
@@ -158,6 +157,7 @@ No modules.
 | <a name="output_listener_id"></a> [listener\_id](#output\_listener\_id) | ARN of the listener (matches `arn`). |
 | <a name="output_listener_tags_all"></a> [listener\_tags\_all](#output\_listener\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider default\_tags configuration block. |
 | <a name="output_name"></a> [name](#output\_name) | Name of the Target Group. |
+| <a name="output_sg_id"></a> [sg\_id](#output\_sg\_id) | The Id of the created security group |
 | <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider default\_tags configuration block. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

@@ -26,7 +26,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.30.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.31.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.5 |
 
 ## Modules
@@ -37,6 +37,7 @@
 | <a name="module_authenticate_cognito"></a> [authenticate\_cognito](#module\_authenticate\_cognito) | ../../ | n/a |
 | <a name="module_authenticate_oidc"></a> [authenticate\_oidc](#module\_authenticate\_oidc) | ../../ | n/a |
 | <a name="module_complete"></a> [complete](#module\_complete) | ../../ | n/a |
+| <a name="module_ec2_instances"></a> [ec2\_instances](#module\_ec2\_instances) | boldlink/ec2/aws | 2.0.4 |
 | <a name="module_waf"></a> [waf](#module\_waf) | boldlink/waf/aws | 1.0.3 |
 
 ## Resources
@@ -49,10 +50,13 @@
 | [aws_cognito_user_pool_domain.domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_domain) | resource |
 | [tls_private_key.main](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
 | [tls_self_signed_cert.main](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/self_signed_cert) | resource |
+| [aws_ami.amazon_linux](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_elb_service_account.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/elb_service_account) | data source |
 | [aws_iam_policy_document.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+| [aws_subnet.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_subnet.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
+| [aws_subnets.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets) | data source |
 | [aws_subnets.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets) | data source |
 | [aws_vpc.supporting](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 
@@ -61,6 +65,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_access_logs_enabled"></a> [access\_logs\_enabled](#input\_access\_logs\_enabled) | Whether access logs are enabled for the load balancer | `bool` | `true` | no |
+| <a name="input_architecture"></a> [architecture](#input\_architecture) | The architecture of the instance to launch | `string` | `"x86_64"` | no |
 | <a name="input_cloudwatch_metrics_enabled"></a> [cloudwatch\_metrics\_enabled](#input\_cloudwatch\_metrics\_enabled) | Whether to enable cloudwatch metrics | `bool` | `false` | no |
 | <a name="input_create_ssl_certificate"></a> [create\_ssl\_certificate](#input\_create\_ssl\_certificate) | Whether to create ssl certificate with the module | `bool` | `true` | no |
 | <a name="input_egress_rules"></a> [egress\_rules](#input\_egress\_rules) | The egress configuration for outgoing lb traffic | `any` | <pre>{<br>  "cidr_blocks": [<br>    "0.0.0.0/0"<br>  ],<br>  "from_port": 0,<br>  "protocol": "-1",<br>  "to_port": 0<br>}</pre> | no |
@@ -71,10 +76,10 @@
 | <a name="input_internal"></a> [internal](#input\_internal) | Whether the created LB is internal or not | `bool` | `false` | no |
 | <a name="input_listeners_configuration"></a> [listeners\_configuration](#input\_listeners\_configuration) | Configuration block for listeners | `any` | <pre>[<br>  {<br>    "default_actions": [<br>      {<br>        "fixed_response": {<br>          "content_type": "text/plain",<br>          "message_body": "Fixed message",<br>          "status_code": "200"<br>        },<br>        "type": "fixed-response"<br>      }<br>    ],<br>    "port": 443,<br>    "protocol": "HTTPS"<br>  },<br>  {<br>    "default_actions": [<br>      {<br>        "tg_index": 0,<br>        "type": "forward"<br>      }<br>    ],<br>    "port": 80,<br>    "protocol": "HTTP"<br>  }<br>]</pre> | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the stack | `string` | `"complete-alb-example"` | no |
+| <a name="input_root_block_device"></a> [root\_block\_device](#input\_root\_block\_device) | Configuration block to customize details about the root block device of the instance. | `list(any)` | <pre>[<br>  {<br>    "encrypted": true,<br>    "volume_size": 15<br>  }<br>]</pre> | no |
 | <a name="input_sampled_requests_enabled"></a> [sampled\_requests\_enabled](#input\_sampled\_requests\_enabled) | Whether to enable simple requests | `bool` | `false` | no |
 | <a name="input_supporting_resources_name"></a> [supporting\_resources\_name](#input\_supporting\_resources\_name) | Name of the supporting resources | `string` | `"terraform-aws-lb"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to the resources | `map(string)` | <pre>{<br>  "Department": "DevOps",<br>  "Environment": "examples",<br>  "LayerId": "cExample",<br>  "LayerName": "cExample",<br>  "Owner": "Boldlink",<br>  "Project": "Examples",<br>  "user::CostCenter": "terraform-registry"<br>}</pre> | no |
-| <a name="input_target_group_configuration"></a> [target\_group\_configuration](#input\_target\_group\_configuration) | Configuration block for target group | `any` | <pre>[<br>  {<br>    "health_check": {<br>      "enabled": true,<br>      "healthy_threshold": 10,<br>      "interval": 10,<br>      "path": "/",<br>      "port": 80,<br>      "protocol": "HTTP",<br>      "timeout": 5,<br>      "unhealthy_threshold": 7<br>    },<br>    "port": 80,<br>    "protocol": "HTTP",<br>    "stickiness": {<br>      "cookie_duration": 3600,<br>      "enabled": true,<br>      "type": "lb_cookie"<br>    },<br>    "target_type": "ip"<br>  }<br>]</pre> | no |
 
 ## Outputs
 

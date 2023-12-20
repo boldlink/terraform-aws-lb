@@ -23,12 +23,6 @@ variable "load_balancer_type" {
   default     = "application"
 }
 
-variable "security_groups" {
-  description = "(Optional) A list of security group IDs to assign to the LB. Only valid for Load Balancers of type application."
-  type        = list(string)
-  default     = []
-}
-
 variable "subnets" {
   description = "(Optional) A list of subnet IDs to attach to the LB. Subnets cannot be updated for Load Balancers of type network. Changing this value for load balancers of type network will force a recreation of the resource."
   type        = list(string)
@@ -53,10 +47,10 @@ variable "timeouts" {
   default     = {}
 }
 
-variable "subnet_mapping" {
+variable "subnet_mappings" {
   description = "(Optional) Define subnet mapping block"
-  type        = map(string)
-  default     = {}
+  type        = list(map(string))
+  default     = []
 }
 
 variable "drop_invalid_header_fields" {
@@ -76,11 +70,13 @@ variable "enable_cross_zone_load_balancing" {
   type        = bool
   default     = false
 }
+
 variable "enable_http2" {
   description = "(Optional) Indicates whether HTTP/2 is enabled in application load balancers. Defaults to `true`" ##Application LB
   type        = bool
   default     = true
 }
+
 variable "customer_owned_ipv4_pool" {
   description = "(Optional) The ID of the customer owned ipv4 pool to use for this load balancer."
   type        = string

@@ -1,3 +1,40 @@
+module "ec2_instances" {
+  source            = "boldlink/ec2/aws"
+  version           = "2.0.4"
+  count             = 1
+  name              = "${var.name}-${count.index}"
+  ami               = data.aws_ami.amazon_linux.id
+  instance_type     = "t3.small"
+  monitoring        = true
+  ebs_optimized     = true
+  vpc_id            = local.vpc_id
+  availability_zone = local.private_sub_azs[count.index % length(local.private_sub_azs)]
+  subnet_id         = local.private_subnets[count.index % length(local.private_subnets)]
+  tags              = merge({ "Name" = "${var.name}-${count.index}" }, var.tags)
+  root_block_device = var.root_block_device
+  extra_script      = templatefile("${path.module}/httpd.sh", {})
+  install_ssm_agent = true
+
+  security_group_ingress = [
+    {
+      from_port       = 0
+      to_port         = 0
+      protocol        = "-1"
+      security_groups = [module.complete.sg_id]
+    }
+  ]
+
+  security_group_egress = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+
+}
+
 module "access_logs_s3" {
   source        = "boldlink/s3/aws"
   bucket        = var.name
@@ -17,8 +54,44 @@ module "complete" {
   enable_deletion_protection = var.enable_deletion_protection
   create_ssl_certificate     = var.create_ssl_certificate
   tags                       = local.tags
-  target_groups              = var.target_group_configuration
   listeners                  = var.listeners_configuration
+
+  target_groups = [
+    {
+      name     = "tcp-${var.name}1"
+      port     = 80
+      protocol = "HTTP"
+
+      stickiness = {
+        cookie_duration = 3600
+        enabled         = true
+        type            = "lb_cookie"
+      }
+
+      health_check = {
+        enabled             = true
+        healthy_threshold   = 3
+        interval            = 30
+        matcher             = "200-399"
+        path                = "/"
+        port                = "traffic-port"
+        protocol            = "HTTP"
+        timeout             = 5
+        unhealthy_threshold = 3
+      }
+
+      #targets
+      target_id         = module.ec2_instances[0].id
+      target_type       = "instance"
+      create_attachment = true
+    }
+  ]
+
+  timeouts = {
+    create = "7m"
+    update = "7m"
+    delete = "7m"
+  }
 
   # WAF association
   associate_with_waf = true
@@ -98,12 +171,39 @@ module "authenticate_cognito" {
   source                     = "../../"
   name                       = "${var.name}-cognito"
   internal                   = var.internal
-  subnets                    = local.public_subnets
   vpc_id                     = local.vpc_id
   enable_deletion_protection = var.enable_deletion_protection
   tags                       = local.tags
+  subnets                    = local.public_subnets
+
+  # We recommend you use `var.subnets` as a best practice.
+  subnet_mappings = [
+    {
+      subnet_id = local.public_subnets[0]
+    },
+    {
+      subnet_id = local.public_subnets[1]
+      #private_ipv4_address = "10.0.2.15" # not supported for application load balancer
+    }
+  ]
 
   listeners = [
+    {
+      port     = "80"
+      protocol = "HTTP"
+
+      default_actions = [
+        {
+          type = "redirect"
+
+          redirect = {
+            port        = "443"
+            protocol    = "HTTPS"
+            status_code = "HTTP_301"
+          }
+        }
+      ]
+    },
     {
       port            = 443
       protocol        = "HTTPS"

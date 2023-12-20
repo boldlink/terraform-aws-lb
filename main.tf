@@ -4,7 +4,7 @@ resource "aws_lb" "main" {
   name_prefix                      = var.name_prefix
   internal                         = var.load_balancer_type == "gateway" ? null : var.internal
   load_balancer_type               = var.load_balancer_type
-  security_groups                  = var.load_balancer_type == "gateway" ? null : (concat(var.security_groups, [aws_security_group.main[0].id]))
+  security_groups                  = var.load_balancer_type == "gateway" ? [] : try([aws_security_group.main[0].id], [])
   subnets                          = var.subnets
   enable_deletion_protection       = var.enable_deletion_protection
   drop_invalid_header_fields       = var.drop_invalid_header_fields
@@ -25,12 +25,12 @@ resource "aws_lb" "main" {
   }
 
   dynamic "subnet_mapping" {
-    for_each = var.subnet_mapping
+    for_each = var.subnets != [] ? [] : var.subnet_mappings
     content {
       subnet_id            = subnet_mapping.value.subnet_id
-      allocation_id        = lookup(subnet_mapping.value, "allocation_id", null)
-      private_ipv4_address = lookup(subnet_mapping.value, "private_ipv4_address", null)
-      ipv6_address         = lookup(subnet_mapping.value, "ipv6_address", null)
+      allocation_id        = try(subnet_mapping.value.allocation_id, null)
+      private_ipv4_address = try(subnet_mapping.value.private_ipv4_address, null)
+      ipv6_address         = try(subnet_mapping.value.ipv6_address, null)
     }
   }
 
@@ -190,50 +190,6 @@ resource "aws_lb_listener" "main" {
   }
 }
 
-## Commented for other release
-# resource "aws_lb_listener_rule" "main" {
-#   for_each = {
-#     for idx, listener in var.listeners : idx => listener.rules
-#     if length(lookup(listener, "rules", [])) > 0
-#   }
-#
-#   listener_arn = try(each.value.listener_arn, aws_lb_listener.main[each.key].arn)
-#   priority     = try(each.value.priority, null)
-#
-#   dynamic "action" {
-#     for_each = [ for action in each.value.actions : action[0] ]
-#
-#     content {
-#       type  = action.value.type
-#       order = try(action.value.order, null)
-#
-#       dynamic "fixed_response" {
-#         for_each = try([action.value.fixed_response], [])
-#
-#         content {
-#           content_type = fixed_response.value.content_type
-#           message_body = try(fixed_response.value.message_body, null)
-#           status_code  = try(fixed_response.value.status_code, null)
-#         }
-#       }
-#     }
-#   }
-#
-#   dynamic "condition" {
-#     for_each = [ for condition in each.value.conditions : condition[0] ]
-#
-#     content {
-#       dynamic "host_header" {
-#         for_each = try([condition.value.host_header], [])
-#
-#         content {
-#           values = host_header.value.values
-#         }
-#       }
-#     }
-#   }
-# }
-
 #### Self Signed Certificate
 resource "tls_private_key" "main" {
   count     = var.create_ssl_certificate ? 1 : 0
@@ -282,23 +238,27 @@ resource "aws_security_group" "main" {
 }
 
 resource "aws_security_group_rule" "ingress" {
-  for_each          = var.ingress_rules
-  type              = "ingress"
-  description       = "Allow custom inbound traffic from specific ports."
-  from_port         = lookup(each.value, "from_port")
-  to_port           = lookup(each.value, "to_port")
-  protocol          = lookup(each.value, "protocol")
-  cidr_blocks       = lookup(each.value, "cidr_blocks", [])
-  security_group_id = aws_security_group.main[0].id
+  for_each                 = var.ingress_rules
+  type                     = "ingress"
+  description              = "Allow custom inbound traffic from specific ports."
+  from_port                = try(each.value.from_port, null)
+  to_port                  = try(each.value.to_port, null)
+  protocol                 = try(each.value.protocol, null)
+  cidr_blocks              = try(each.value.cidr_blocks, [])
+  security_group_id        = aws_security_group.main[0].id
+  source_security_group_id = try(each.value.source_security_group_id, null)
+  self                     = try(each.value.self, null)
 }
 
 resource "aws_security_group_rule" "egress" {
-  for_each          = var.egress_rules
-  type              = "egress"
-  description       = "Allow custom egress traffic"
-  from_port         = lookup(each.value, "from_port")
-  to_port           = lookup(each.value, "to_port")
-  protocol          = "-1"
-  cidr_blocks       = lookup(each.value, "cidr_blocks", [])
-  security_group_id = aws_security_group.main[0].id
+  for_each                 = var.egress_rules
+  type                     = "egress"
+  description              = "Allow custom egress traffic"
+  from_port                = try(each.value.from_port, null)
+  to_port                  = try(each.value.to_port, null)
+  protocol                 = try(each.value.protocol, "-1")
+  cidr_blocks              = try(each.value.cidr_blocks, [])
+  security_group_id        = aws_security_group.main[0].id
+  source_security_group_id = try(each.value.source_security_group_id, null)
+  self                     = try(each.value.self, null)
 }

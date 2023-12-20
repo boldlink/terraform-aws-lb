@@ -75,3 +75,9 @@ output "listener_tags_all" {
   value       = aws_lb_listener.main.*.tags_all
   description = "A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block."
 }
+
+# Security group
+output "sg_id" {
+  value       = join("", aws_security_group.main[*].id)
+  description = "The Id of the created security group"
+}

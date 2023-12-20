@@ -20,7 +20,7 @@ module "ec2_instances" {
       from_port       = 0
       to_port         = 0
       protocol        = "-1"
-      security_groups = [aws_security_group.nlb.id]
+      security_groups = [module.nlb.sg_id]
     }
   ]
 
@@ -43,7 +43,6 @@ module "nlb" {
   internal                         = false
   subnets                          = local.public_subnets
   enable_deletion_protection       = var.enable_deletion_protection
-  security_groups                  = [aws_security_group.nlb.id]
   idle_timeout                     = 60
   enable_cross_zone_load_balancing = true
   ip_address_type                  = "ipv4"

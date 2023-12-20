@@ -13,6 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: add listener rules resource and showcase in the examples
 - feat: showcase usage of complete lb to return a response from app/webpage
 - feat: showcase `authenticate-cognito` with a working app/webpage
+- feat: showcase use of `customer_owned_ipv4_pool` attribute
+
+## [1.1.4] - 2023-12-14
+- fix: showcase `redirect` default action
+- feat: Added instance to complete example
+- fix: subnet mappings to have the ability to specify multiple subnets
+- feat: Added security group ID as output
+- feat: removed ability to provide external security group. The module creates a security group with the flexibility to configure the rules
 
 ## [1.1.3] - 2023-12-12
 - feat: showcase `authenticate-oidc` default action
@@ -98,8 +106,9 @@ Feature: Added listener certificate
 ### Changes
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.1.3...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.1.4...HEAD
 
+[1.1.4]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.4
 [1.1.3]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.3
 [1.1.2]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.2
 [1.1.1]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.1
