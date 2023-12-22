@@ -80,9 +80,13 @@ module "nlb" {
       protocol = "UDP"
     },
     {
-      name     = "tcp-${var.name}"
-      port     = 80
-      protocol = "TCP"
+      name                 = "tcp-${var.name}"
+      port                 = 80
+      protocol             = "TCP"
+      deregistration_delay = 300
+
+      # Connection Termination (used for NLB)
+      connection_termination = true
 
       health_check = {
         enabled             = true
