@@ -46,15 +46,16 @@ module "access_logs_s3" {
 module "complete" {
   #checkov:skip=CKV_AWS_150: "Ensure that Load Balancer has deletion protection enabled"
   #checkov:skip=CKV_AWS_2: "Ensure ALB protocol is HTTPS"
-  source                     = "../../"
-  name                       = var.name
-  internal                   = var.internal
-  subnets                    = local.public_subnets
-  vpc_id                     = local.vpc_id
-  enable_deletion_protection = var.enable_deletion_protection
-  create_ssl_certificate     = var.create_ssl_certificate
-  tags                       = local.tags
-  listeners                  = var.listeners_configuration
+  source                           = "../../"
+  name                             = var.name
+  internal                         = var.internal
+  subnets                          = local.public_subnets
+  vpc_id                           = local.vpc_id
+  enable_deletion_protection       = var.enable_deletion_protection
+  enable_cross_zone_load_balancing = true
+  create_ssl_certificate           = var.create_ssl_certificate
+  tags                             = local.tags
+  listeners                        = var.listeners_configuration
 
   target_groups = [
     {
