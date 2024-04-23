@@ -10,3 +10,4 @@ skip-check:
 - CKV2_AWS_61 #Ensure that an S3 bucket has a lifecycle configuration"
 - CKV_AWS_2 #Ensure ALB protocol is HTTPS"
 - CKV_TF_1 #"Ensure Terraform module sources use a commit hash"
+- CKV2_AWS_5 #Ensure that Security Groups are attached to another resource

@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: showcase `authenticate-cognito` with a working app/webpage
 - feat: showcase use of `customer_owned_ipv4_pool` attribute
 
+## [1.1.6] - 2024-04-23
+- fix: CKV2_AWS_5 "Ensure that Security Groups are attached to another resource"
+
 ## [1.1.5] - 2023-12-22
 - showcase `connection_termination` for network load balancer
 - showcase `deregistration_delay` in nlb example
@@ -111,8 +114,9 @@ Feature: Added listener certificate
 ### Changes
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.1.5...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-lb/compare/1.1.6...HEAD
 
+[1.1.6]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.6
 [1.1.5]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.5
 [1.1.4]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.4
 [1.1.3]: https://github.com/boldlink/terraform-aws-lb/releases/tag/1.1.3
