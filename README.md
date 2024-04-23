@@ -70,6 +70,9 @@ module "minimum" {
 
 [Terraform provider documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb)
 
+## Checkov Flags
+You may observe a skipped Checkov alert (CKV2_AWS_5) in our Load Balancer module configuration. This alert is intentionally skipped as the Load Balancer security group is conditionally created only for certain types of load balancers and not attached to other resources. Specifically, the security group is created for Application Load Balancers and Network Load Balancers but not for Gateway Load Balancers. The security group is used to configure a set of firewall rules that control the traffic to your load balancer. Therefore, the attachment of security groups to other resources is not applicable in this context.
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -83,7 +86,7 @@ module "minimum" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.31.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.46.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.5 |
 
 ## Modules
